@@ -10,24 +10,16 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * The path to your application's "home" route.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
-     */
-    public const HOME = '/home';
+    public const HOME = '/';  // Cambiado de '/home' a '/' para redirigir a la página principal
 
-    /**
-     * Define your route model bindings, pattern filters, and other route configuration.
-     */
     public function boot(): void
     {
+        // Configuración del limitador de velocidad para la API
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        // Registrar las rutas web y API
         $this->routes(function () {
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
@@ -37,9 +29,17 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
         });
 
-        // Ocultar rutas de registro
-        Route::match(['get', 'post'], 'register', function() {
-            return redirect('/');
+        // Deshabilitar completamente el registro
+        Route::middleware('web')->group(function () {
+            // Redirigir cualquier intento de acceso a la página de registro
+            Route::match(['get', 'post'], 'register', function() {
+                return redirect('/');
+            });
+            
+            // Deshabilitar la ruta de registro
+            Route::any('register', function() {
+                abort(404);
+            });
         });
     }
 }

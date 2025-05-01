@@ -50,7 +50,7 @@
             </button>
           </div>
           <section id="inicio" class="mb-4">
-            <h1 class="text-center mb-3 section-title h1">
+            <h1 class="text-center mb-3 section-title h1 display-1 fst-italic fw-bold" style="font-family: 'Playfair Display', serif;">
               Bienvenidos a Todo Estilo
             </h1>
 
