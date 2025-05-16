@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;  // Importa DB para insertar el registro
 
 return new class extends Migration
 {
@@ -17,9 +18,22 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('telefono')->nullable();
+            $table->string('direccion')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
+
+        // Insertar el registro de "Admin" después de la creación de la tabla
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'yeis.pineda@gmail.com',
+            'telefono' => '3128845647',
+            'direccion' => 'calle 57 19-30',
+            'password' => bcrypt('password'),  // Asegúrate de usar una contraseña cifrada
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

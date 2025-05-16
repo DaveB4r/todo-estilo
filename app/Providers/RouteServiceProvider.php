@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public const HOME = '/';  // Cambiado de '/home' a '/' para redirigir a la página principal
+    public const HOME = '/admin';  // Cambiado de '/home' a '/' para redirigir a la página principal
 
     public function boot(): void
     {
@@ -32,12 +32,12 @@ class RouteServiceProvider extends ServiceProvider
         // Deshabilitar completamente el registro
         Route::middleware('web')->group(function () {
             // Redirigir cualquier intento de acceso a la página de registro
-            Route::match(['get', 'post'], 'register', function() {
+            Route::match(['get', 'post'], 'register', function () {
                 return redirect('/');
             });
-            
+
             // Deshabilitar la ruta de registro
-            Route::any('register', function() {
+            Route::any('register', function () {
                 abort(404);
             });
         });
