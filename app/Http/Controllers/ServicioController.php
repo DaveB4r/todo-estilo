@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\TipoServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class ServicioController extends Controller
 {
@@ -81,6 +82,82 @@ class ServicioController extends Controller
                 ->back()
                 ->withInput()
                 ->with('error', 'Error al registrar el servicio: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Mostrar el formulario para editar un servicio específico.
+     */
+    public function edit(Servicio $servicio)
+    {
+        $estilistas = User::all();
+        $categorias = ['Peluquería', 'Uñas', 'Maquillaje'];
+        $tipoServicios = TipoServicio::all();
+        return view('formulario_editar_servicio', compact('servicio', 'estilistas', 'categorias', 'tipoServicios')); // Asegúrate de tener esta vista
+    }
+
+    /**
+     * Actualizar el servicio especificado en la base de datos.
+     */
+    public function update(Request $request, Servicio $servicio)
+    {
+        \Log::info('Datos recibidos en update para el servicio ' . $servicio->id . ':', $request->all());
+    
+        try {
+            DB::beginTransaction();
+    
+            $validatedData = $request->validate([
+                'fecha'             => 'required|date',
+                'user_id'           => 'required|exists:users,id',
+                'categoria'         => 'required|string|in:Peluquería,Uñas,Maquillaje',
+                'tipo_servicio_id'  => 'required|exists:tipo_servicios,id',
+                'metodo_pago'       => 'required|string|in:Efectivo,Transferencia',
+                'observaciones'     => 'nullable|string|max:1000',
+            ]);
+    
+            $tipoServicio = TipoServicio::findOrFail($validatedData['tipo_servicio_id']);
+    
+            $servicio->fecha             = $validatedData['fecha'];
+            $servicio->user_id           = $validatedData['user_id'];
+            $servicio->categoria         = $validatedData['categoria'];
+            $servicio->tipo_servicio_id  = $tipoServicio->id;
+            $servicio->metodo_pago       = $validatedData['metodo_pago'];
+            $servicio->observaciones     = $validatedData['observaciones'] ?? null;
+            $servicio->porcentaje        = $tipoServicio->porcentaje / 100;
+            $servicio->precio            = $tipoServicio->precio;
+    
+            $servicio->save(); // ¡Esta línea es crucial para guardar los cambios!
+    
+            DB::commit();
+    
+            return Redirect::route('dashboard')->with('success', 'Servicio actualizado exitosamente.');
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            \Log::error('Error en update para el servicio ' . $servicio->id . ':', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+    
+            return Redirect::back()->withInput()->with('error', 'Error al actualizar el servicio: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Eliminar el servicio especificado de la base de datos.
+     */
+    public function destroy(Servicio $servicio)
+    {
+        try {
+            $servicio->delete();
+            return Redirect::route('dashboard')->with('success', 'Servicio eliminado correctamente.');
+        } catch (\Exception $e) {
+            \Log::error('Error al eliminar el servicio ' . $servicio->id . ':', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return Redirect::back()->with('error', 'Error al eliminar el servicio: ' . $e->getMessage());
         }
     }
 }

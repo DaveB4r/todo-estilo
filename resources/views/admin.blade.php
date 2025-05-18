@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config('app.name', 'Todo Estilo') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
 <div class="min-h-screen bg-gray-100">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ config('app.name', 'Todo Estilo') }}</title>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
     <nav class="bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -109,6 +110,9 @@
                                             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                                 Medio de Pago
                                             </th>
+                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                Acciones
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -127,6 +131,14 @@
                                             <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
                                                 {{ $servicio->metodo_pago }}
                                             </td>
+                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm **flex items-center**">
+                                                <a href="{{ route('servicios.edit', $servicio->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Editar</a>
+                                                <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de eliminar este servicio?')">Borrar</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                         @else
                                         <tr>
@@ -139,6 +151,14 @@
                                             <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
                                                 {{ $servicio->metodo_pago }}
                                             </td>
+                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
+                                                <a href="{{ route('servicios.edit', $servicio->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2 **inline-block**">Editar</a>
+                                                <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" class="**inline-block**">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de eliminar este servicio?')">Borrar</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                         @endif
                                         @endforeach
@@ -150,6 +170,9 @@
                                             </td>
                                             <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                                 $ {{ number_format($serviciosEmpleado->sum('precio'), 0) }}
+                                            </td>
+                                            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+
                                             </td>
                                             <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
 
@@ -185,4 +208,5 @@
         </div>
     </div>
 </div>
+
 </html>

@@ -48,7 +48,7 @@ class IngresoController extends Controller
      */
     public function edit(Ingreso $ingreso)
     {
-        return view('editar_ingreso', compact('ingreso')); // Muestra el formulario para editar un ingreso
+        return view('formulario_editar_ingreso', compact('ingreso')); // Muestra el formulario para editar un ingreso
     }
 
     /**

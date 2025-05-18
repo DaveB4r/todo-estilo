@@ -10,7 +10,6 @@
 
 <body>
     <div class="min-h-screen bg-gray-100">
-        <!-- Navegación -->
         <nav class="bg-white shadow-lg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
@@ -38,23 +37,21 @@
         </nav>
 
         <div class="flex min-h-screen bg-gray-100">
-            <!-- Panel lateral -->
             <aside class="w-35 bg-gray-500 shadow-md px-5 py-2 space-y-4">
                 <nav class="space-y-2">
                     <a href="{{ route('usuarios.create') }}" class="block px-5 py-2 rounded hover:bg-gray-700 text-white font-medium">Crear usuario</a>
                 </nav>
             </aside>
 
-            <!-- Contenido -->
-            @if(session('success'))
-            <div class="w-full h-8 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4 flex items-center justify-between shadow">
-                <span class="text-sm">
-                    {{ session('success') }}
-                </span>
-                <button onclick="this.parentElement.remove()" class="text-green-700 hover:text-green-900 font-bold text-base leading-none">&times;</button>
-            </div>
-            @endif
             <main class="p-6 w-full">
+                @if(session('success'))
+                <div class="w-full h-8 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4 flex items-center justify-between shadow">
+                    <span class="text-sm">
+                        {{ session('success') }}
+                    </span>
+                    <button onclick="this.parentElement.remove()" class="text-green-700 hover:text-green-900 font-bold text-base leading-none">&times;</button>
+                </div>
+                @endif
                 @yield('content')
             </main>
         </div>

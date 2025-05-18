@@ -50,6 +50,6 @@ class RegistrarIngresoController extends Controller
         $ingreso->save();
 
         // Redirige con un mensaje de éxito
-        return redirect('/dashboard')->with('success', 'Ingreso registrado correctamente.');
+        return redirect('/ingresos')->with('success', 'Ingreso registrado correctamente.');
     }
 }

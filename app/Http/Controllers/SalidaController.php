@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Salida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect; 
 
 class SalidaController extends Controller
 {
@@ -48,7 +49,7 @@ class SalidaController extends Controller
      */
     public function edit(Salida $salida)
     {
-        return view('salidas.edit', compact('salida')); // Asegúrate de crear la vista 'salidas.edit'
+        return view('formulario_editar_salida', compact('salida')); // Asegúrate de crear la vista 'salidas.edit'
     }
 
     /**
@@ -77,4 +78,5 @@ class SalidaController extends Controller
         $salida->delete();
         return redirect()->route('salidas.index')->with('success', 'Salida eliminada correctamente.');
     }
+    
 }
