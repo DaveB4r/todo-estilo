@@ -39,13 +39,41 @@
         <div class="flex min-h-screen bg-gray-100">
             <aside class="w-64 bg-gray-500 shadow-md px-4 py-6 space-y-4 text-white">
                 <nav class="space-y-2">
-                    <a href="{{ route('clientes.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Crear Cliente</a>
-                    <a href="{{ route('cuentas_por_cobrar.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Nueva Cuenta por Cobrar</a>
+                    <a href="{{ route('clientes.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Crear cliente</a>
+                    <a href="{{ route('cuentas_por_cobrar.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Nueva cuenta por cobrar</a>
                 </nav>
             </aside>
             <main class="flex-1 py-4 px-6 grid grid-cols-4 gap-4">
+                {{-- Acá debería salir el mensaje de confirmación --}}
+                <div class="col-span-4"> {{-- Este div debe ser col-span-4 para que el mensaje ocupe todo el ancho arriba de las tablas --}}
+                    @if (session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onclick="this.parentElement.style.display='none'">
+                            <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    @endif
+
+                    @if (session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <span class="block sm:inline">{{ session('error') }}</span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onclick="this.parentElement.style.display='none'">
+                            <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    @endif
+                </div>
+                <div class="flex justify-center w-full">
+                    <h1 class="text-3xl italic font-serif text-gray-800">Clientes</h1>
+                </div>
                 <div class="col-span-1 bg-white shadow-md rounded-md p-4 overflow-y-auto h-96">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Clientes</h2>
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -85,20 +113,9 @@
                 </div>
 
                 <div class="col-span-3">
-                    <h1 class="text-3xl font-semibold mb-4">Cuentas por Cobrar</h1>
-
-                    @if (session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                        <span class="block sm:inline">{{ session('success') }}</span>
+                    <div class="flex justify-center w-full">
+                        <h1 class="text-3xl italic font-serif text-gray-800">Cuentas por cobrar</h1>
                     </div>
-                    @endif
-
-                    @if (session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                        <span class="block sm:inline">{{ session('error') }}</span>
-                    </div>
-                    @endif
-
                     <div class="bg-white shadow-md rounded-md p-4 overflow-y-auto h-96">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">

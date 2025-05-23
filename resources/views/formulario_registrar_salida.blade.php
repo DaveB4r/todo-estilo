@@ -1,78 +1,125 @@
-<div class="flex items-center justify-center mb-4">
-    <img src="/img/Logo_todo_estilo.png" alt="Logo" class="h-20">
-</div>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-<div class="ml-4 flex items-center">
-    <h1 class="text-3xl italic font-serif text-gray-800">Registrar Salida</h1>
-</div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config('app.name', 'Todo Estilo') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
 
-<form action="{{ route('salidas.store') }}" method="POST" class="mt-6">
-    @if ($errors->any())
-        <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+{{-- El contenedor principal en el body para centrar todo el contenido --}}
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    {{-- Contenedor del formulario con ancho limitado y borde --}}
+    <div class="bg-white p-8 rounded-lg shadow-xl border-4 border-gray-400 w-11/12 md:w-3/4 lg:w-1/2">
+        {{-- Aquí se usa w-1/2 para media pantalla en Laptops (lg), w-3/4 en tablets (md) y w-11/12 en móviles --}}
+
+        <div class="flex flex-col items-center justify-center mb-6">
+            {{-- Contenedor para el logo y el título, centrado --}}
+            <img src="/img/Logo_todo_estilo.png" alt="Logo" class="h-24 mb-4"> {{-- Altura unificada con otros formularios --}}
+            <h1 class="text-3xl italic font-serif text-gray-800 text-center">Registrar salida</h1>
         </div>
-    @endif
-    @csrf
 
-    <table class="w-full space-y-4">
-        <tr>
-            <td class="pr-4 text-right"><label for="fecha" class="text-gray-700 text-base">Fecha</label></td>
-            <td><input type="date" name="fecha" id="fecha" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required></td>
-        </tr>
-
-        <tr>
-            <td class="pr-4 text-right"><label for="salida" class="text-gray-700 text-base">Salida</label></td>
-            <td>
-                <select name="salida" id="salida" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required>
-                    <option value="" disabled selected>Seleccione el tipo de salida</option>
-                    <option value="Arriendo">Arriendo</option>
-                    <option value="Servicios públicos">Servicios públicos</option>
-                    <option value="Nómina">Nómina</option>
-                    <option value="Ajuste por transferencia">Ajuste por transferencia</option>
-                    <option value="Ajuste cierre">Ajuste cierre</option>
-                    <option value="Pago a proveedor">Pago a proveedor</option>
-                    <option value="Otros">Otros</option>
-                </select>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="pr-4 text-right"><label for="observacion" class="text-gray-700 text-base">Observación</label></td>
-            <td><input type="text" name="observacion" id="observacion" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"></td>
-        </tr>
-
-        <tr>
-            <td class="pr-4 text-right"><label for="medio_pago" class="text-gray-700 text-base">Medio de Pago</label></td>
-            <td>
-                <select name="medio_pago" id="medio_pago" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required>
-                    <option value="" disabled selected>Seleccione el medio de pago</option>
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Transferencia">Transferencia</option>
-                </select>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="pr-4 text-right"><label for="valor" class="text-gray-700 text-base">Valor</label></td>
-            <td><input type="number" name="valor" id="valor" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required></td>
-        </tr>
-
-        <tr>
-            <td colspan="2">
-                <div class="flex justify-end mt-6">
-                    <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900 mr-2">
-                        Registrar Salida
-                    </button>
-
-                    <button type="button" onclick="window.location.href='{{ url('/dashboard') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
-                        Cancelar
-                    </button>
+        <form action="{{ route('salidas.store') }}" method="POST" class="space-y-4"> {{-- Añadido space-y-4 para espaciado --}}
+            @if ($errors->any())
+                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            </td>
-        </tr>
-    </table>
-</form>
+            @endif
+            @csrf
+
+            <table class="w-full"> {{-- Tabla para la estructura del formulario --}}
+                <tr>
+                    <td class="pr-4 text-right py-2"><label for="fecha" class="text-gray-700 text-base">Fecha</label></td>
+                    <td>
+                        <input
+                            type="date"
+                            name="fecha"
+                            id="fecha"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('fecha') }}" {{-- Usamos old() para repoblar el campo --}}
+                            required
+                        >
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="pr-4 text-right py-2"><label for="salida" class="text-gray-700 text-base">Salida</label></td>
+                    <td>
+                        <select name="salida" id="salida" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required>
+                            <option value="" disabled {{ !old('salida') ? 'selected' : '' }}>Seleccione el tipo de salida</option>
+                            <option value="Arriendo" {{ old('salida') == 'Arriendo' ? 'selected' : '' }}>Arriendo</option>
+                            <option value="Servicios públicos" {{ old('salida') == 'Servicios públicos' ? 'selected' : '' }}>Servicios públicos</option>
+                            <option value="Nómina" {{ old('salida') == 'Nómina' ? 'selected' : '' }}>Nómina</option>
+                            <option value="Ajuste por transferencia" {{ old('salida') == 'Ajuste por transferencia' ? 'selected' : '' }}>Ajuste por transferencia</option>
+                            <option value="Ajuste cierre" {{ old('salida') == 'Ajuste cierre' ? 'selected' : '' }}>Ajuste cierre</option>
+                            <option value="Pago a proveedor" {{ old('salida') == 'Pago a proveedor' ? 'selected' : '' }}>Pago a proveedor</option>
+                            <option value="Otros" {{ old('salida') == 'Otros' ? 'selected' : '' }}>Otros</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="pr-4 text-right py-2"><label for="observacion" class="text-gray-700 text-base">Observación</label></td>
+                    <td>
+                        <input
+                            type="text"
+                            name="observacion"
+                            id="observacion"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('observacion') }}" {{-- Usamos old() --}}
+                        >
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="pr-4 text-right py-2"><label for="medio_pago" class="text-gray-700 text-base">Medio de pago</label></td>
+                    <td>
+                        <select name="medio_pago" id="medio_pago" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required>
+                            <option value="" disabled {{ !old('medio_pago') ? 'selected' : '' }}>Seleccione el medio de pago</option>
+                            <option value="Efectivo" {{ old('medio_pago') == 'Efectivo' ? 'selected' : '' }}>Efectivo</option>
+                            <option value="Transferencia" {{ old('medio_pago') == 'Transferencia' ? 'selected' : '' }}>Transferencia</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="pr-4 text-right py-2"><label for="valor" class="text-gray-700 text-base">Valor</label></td>
+                    <td>
+                        <input
+                            type="number"
+                            name="valor"
+                            id="valor"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('valor') }}" {{-- Usamos old() --}}
+                            required
+                            min="0" {{-- Aseguramos que el valor no sea negativo --}}
+                            step="1" {{-- Permite solo números enteros --}}
+                            placeholder="Ej: 50000"
+                        >
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="flex justify-center mt-6">
+                            <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900 mr-2">
+                                Registrar salida
+                            </button>
+
+                            <button type="button" onclick="window.location.href='{{ url('/salidas') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
+                                Cancelar
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

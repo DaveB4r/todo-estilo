@@ -1,17 +1,28 @@
-<div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
-    <div class="flex items-center justify-center mb-4">
-        <img src="/img/Logo_todo_estilo.png" alt="Logo" class="h-20">
-    </div>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    <div class="text-center mb-6">
-        <h1 class="text-3xl italic font-serif text-gray-800">Crear nuevo cliente</h1>
-    </div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config('app.name', 'Todo Estilo') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
 
-    <div class="w-full max-w-2xl border-4 border-gray-400 rounded-lg p-8 bg-white shadow-lg">
+{{-- El contenedor principal en el body para centrar todo el contenido --}}
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    {{-- Agregué 'p-4' al body para un pequeño padding en pantallas muy pequeñas --}}
+
+    {{-- Contenedor del formulario con ancho limitado y borde --}}
+    <div class="bg-white p-8 rounded-lg shadow-xl border-4 border-gray-400 w-11/12 md:w-3/4 lg:w-1/2">
+        {{-- Aquí se usa w-1/2 para media pantalla en Laptops (lg), w-3/4 en tablets (md) y w-11/12 en móviles --}}
+
+        <div class="flex flex-col items-center justify-center mb-6">
+            {{-- Contenedor para el logo y el título, centrado --}}
+            <img src="/img/Logo_todo_estilo.png" alt="Logo" class="h-24 mb-4"> {{-- Altura unificada con otros formularios --}}
+            <h1 class="text-3xl italic font-serif text-gray-800 text-center">Crear nuevo cliente</h1>
+        </div>
+
         <form action="{{ route('clientes.store') }}" method="POST" class="space-y-4">
-            @csrf
-
-
             @if ($errors->any())
             <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
                 <ul class="list-disc pl-5">
@@ -21,42 +32,103 @@
                 </ul>
             </div>
             @endif
+            @csrf
 
             <table class="w-full">
                 <tr>
-                    <td class="pr-4 text-right align-top"><label for="identificacion" class="text-gray-700 text-base">Identificación</label></td>
-                    <td><input type="number" name="identificacion" id="identificacion" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required></td>
+                    <td class="pr-4 text-right py-2 align-top"><label for="identificacion" class="text-gray-700 text-base">Identificación</label></td>
+                    <td>
+                        <input
+                            type="number"
+                            name="identificacion"
+                            id="identificacion"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('identificacion') }}" {{-- Usamos old() para mantener el valor si hay un error de validación --}}
+                            required
+                            min="0"
+                            step="1"
+                            placeholder="Ej: 1234567890"
+                        >
+                    </td>
                 </tr>
                 <tr>
-                    <td class="pr-4 text-right align-top"><label for="nombre" class="text-gray-700 text-base">Nombre</label></td>
-                    <td><input type="text" name="nombre" id="nombre" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base" required></td>
+                    <td class="pr-4 text-right py-2 align-top"><label for="nombre" class="text-gray-700 text-base">Nombre</label></td>
+                    <td>
+                        <input
+                            type="text"
+                            name="nombre"
+                            id="nombre"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('nombre') }}"
+                            required
+                            placeholder="Ej: Juan"
+                        >
+                    </td>
                 </tr>
                 <tr>
-                    <td class="pr-4 text-right align-top"><label for="apellido" class="text-gray-700 text-base">Apellido</label></td>
-                    <td><input type="text" name="apellido" id="apellido" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"></td>
+                    <td class="pr-4 text-right py-2 align-top"><label for="apellido" class="text-gray-700 text-base">Apellido</label></td>
+                    <td>
+                        <input
+                            type="text"
+                            name="apellido"
+                            id="apellido"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('apellido') }}"
+                            placeholder="Ej: Pérez"
+                        >
+                    </td>
                 </tr>
                 <tr>
-                    <td class="pr-4 text-right align-top"><label for="telefono" class="text-gray-700 text-base">Teléfono</label></td>
-                    <td><input type="text" name="telefono" id="telefono" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"></td>
+                    <td class="pr-4 text-right py-2 align-top"><label for="telefono" class="text-gray-700 text-base">Teléfono</label></td>
+                    <td>
+                        <input
+                            type="tel" {{-- Cambié a type="tel" para indicar que es un número de teléfono --}}
+                            name="telefono"
+                            id="telefono"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('telefono') }}"
+                            placeholder="Ej: 3001234567"
+                        >
+                    </td>
                 </tr>
                 <tr>
-                    <td class="pr-4 text-right align-top"><label for="direccion" class="text-gray-700 text-base">Dirección</label></td>
-                    <td><input type="text" name="direccion" id="direccion" class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"></td>
+                    <td class="pr-4 text-right py-2 align-top"><label for="direccion" class="text-gray-700 text-base">Dirección</label></td>
+                    <td>
+                        <input
+                            type="text"
+                            name="direccion"
+                            id="direccion"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            value="{{ old('direccion') }}"
+                            placeholder="Ej: Calle 10 # 20-30"
+                        >
+                    </td>
                 </tr>
                 <tr>
-                    <td class="pr-4 text-right align-top"><label for="observaciones" class="text-gray-700 text-base">Observaciones</label></td>
-                    <td><textarea name="observaciones" id="observaciones" class="w-full border border-gray-300 rounded shadow-sm h-24 px-3 text-base"></textarea></td>
+                    <td class="pr-4 text-right py-2 align-top"><label for="observaciones" class="text-gray-700 text-base">Observaciones</label></td>
+                    <td>
+                        <textarea
+                            name="observaciones"
+                            id="observaciones"
+                            class="w-full border border-gray-300 rounded shadow-sm h-24 px-3 py-2 text-base" {{-- Agregué py-2 para padding vertical en textarea --}}
+                            placeholder="Notas adicionales sobre el cliente..."
+                        >{{ old('observaciones') }}</textarea>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td class="pt-6">
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900 mr-2">Crear cliente</button>
-                            <button type="button" onclick="window.location.href='{{ route('cuentas_por_cobrar.index') }}'" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cancelar</button>
+                    <td colspan="2">
+                        <div class="flex justify-center mt-6">
+                            <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900 mr-2">
+                                Crear cliente
+                            </button>
+                            <button type="button" onclick="window.location.href='{{ route('cuentas_por_cobrar.index') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
+                                Cancelar
+                            </button>
                         </div>
                     </td>
                 </tr>
             </table>
         </form>
     </div>
-</div>
+</body>
+</html>

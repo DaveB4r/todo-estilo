@@ -1,8 +1,10 @@
 @extends('usuarios') {{-- Aquí haces referencia a tu plantilla base --}}
 
 @section('content')
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Lista de usuarios</h2>
 
+    <div class="flex justify-center w-full">
+        <h1 class="text-3xl italic font-serif text-gray-800">Lista de usuarios</h1>
+    </div>
     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">

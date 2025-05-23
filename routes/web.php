@@ -12,6 +12,9 @@ use App\Http\Controllers\RegistrarSalidaController;
 use App\Http\Controllers\LiquidacionesController;
 use App\Http\Controllers\CuentasPorCobrarController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CuadreDeCajaController;
+use App\Http\Controllers\IndicadoresController;
+
 
 // Rutas públicas
 Route::get('/', function () {
@@ -92,6 +95,14 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{cuentaPorCobrar}', [CuentasPorCobrarController::class, 'update'])->name('update');
         Route::delete('/{cuentaPorCobrar}', [CuentasPorCobrarController::class, 'destroy'])->name('destroy');
     });
+    Route::get('/indicadores', [IndicadoresController::class, 'index'])->name('indicadores.index');
+    //Route::get('/cuadre-de-caja', [CuadreDeCajaController::class, 'index'])->name('cuadre_de_caja.index');
+    
+// routes/web.php
+   
+    Route::get('/cuadre_de_caja', [CuadreDeCajaController::class, 'index'])->name('cuadre_de_caja');
+
+    Route::get('/indicadores', [IndicadoresController::class, 'index'])->name('indicadores.index');
 });
 
 // Rutas de autenticación

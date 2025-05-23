@@ -45,8 +45,8 @@
                 <a href="{{ route('salidas.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Salidas</a>
                 <a href="liquidaciones" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Liquidación de empleados</a>
                 <a href="{{ route('cuentas_por_cobrar.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Cuentas por cobrar</a>
-                <a href="#" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Indicadores</a>
-                <a href="#" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Cuadre de caja</a>
+                <a href="{{ route('cuadre_de_caja') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Cuadre de caja</a>
+                <!--<a href="{{ route('indicadores.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Indicadores</a>-->
             </nav>
         </aside>
 
@@ -99,87 +99,91 @@
                             <div class="bg-gray-100 rounded-md p-2">
                                 <h4 class="font-semibold text-gray-700 mb-2">{{ $empleado->name }}</h4>
                                 <table class="min-w-full leading-normal">
-                                    <thead>
-                                        <tr>
-                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                Servicio
-                                            </th>
-                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                Valor
-                                            </th>
-                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                Medio de Pago
-                                            </th>
-                                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                Acciones
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($serviciosEmpleado as $servicio)
-                                        @php
-                                        $tipoServicio = App\Models\TipoServicio::find($servicio->tipo_servicio_id);
-                                        @endphp
-                                        @if($tipoServicio)
-                                        <tr>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
-                                                {{ $tipoServicio->nombre }}
-                                            </td>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
-                                                $ {{ number_format($servicio->precio, 0) }}
-                                            </td>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
-                                                {{ $servicio->metodo_pago }}
-                                            </td>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm **flex items-center**">
-                                                <a href="{{ route('servicios.edit', $servicio->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Editar</a>
-                                                <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de eliminar este servicio?')">Borrar</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @else
-                                        <tr>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm text-red-500">
-                                                Servicio no encontrado (ID: {{ $servicio->tipo_servicio_id }})
-                                            </td>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
-                                                $ {{ number_format($servicio->precio, 0) }}
-                                            </td>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
-                                                {{ $servicio->metodo_pago }}
-                                            </td>
-                                            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
-                                                <a href="{{ route('servicios.edit', $servicio->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2 **inline-block**">Editar</a>
-                                                <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" class="**inline-block**">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de eliminar este servicio?')">Borrar</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                Total
-                                            </td>
-                                            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                $ {{ number_format($serviciosEmpleado->sum('precio'), 0) }}
-                                            </td>
-                                            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+    <thead>
+        <tr>
+            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Servicio
+            </th>
+            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Valor
+            </th>
+            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Medio de Pago
+            </th>
+            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Acciones
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($serviciosEmpleado as $servicio)
+        @php
+        $tipoServicio = App\Models\TipoServicio::find($servicio->tipo_servicio_id);
+        @endphp
+        @if($tipoServicio)
+        <tr>
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
+                {{ $tipoServicio->nombre }}
+            </td>
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
+                $ {{ number_format($servicio->precio, 0) }}
+            </td>
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
+                {{ $servicio->metodo_pago }}
+            </td>
+            {{-- EL CAMBIO CLAVE ESTÁ AQUÍ: Añadir flex, items-center, justify-end y gap-4 --}}
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm **flex items-center justify-end gap-4**">
+                <a href="{{ route('servicios.edit', $servicio->id) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este servicio?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-red-600 hover:text-red-900">Borrar</button>
+                </form>
+            </td>
+        </tr>
+        @else
+        <tr>
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm text-red-500">
+                Servicio no encontrado (ID: {{ $servicio->tipo_servicio_id }})
+            </td>
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
+                $ {{ number_format($servicio->precio, 0) }}
+            </td>
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
+                {{ $servicio->metodo_pago }}
+            </td>
+            {{-- Y también aquí, para el caso donde el servicio no se encuentra --}}
+            <td class="px-5 py-3 border-b border-gray-200 bg-white text-sm">
+    <div class="flex space-x-4">
+        <a href="{{ route('servicios.edit', $servicio->id) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+        <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este servicio?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-600 hover:text-red-900">Borrar</button>
+        </form>
+    </div>
+</td>
+        </tr>
+        @endif
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Total
+            </td>
+            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                $ {{ number_format($serviciosEmpleado->sum('precio'), 0) }}
+            </td>
+            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
 
-                                            </td>
-                                            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            </td>
+            <td class="px-5 py-3 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
 
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+            </td>
+        </tr>
+    </tfoot>
+</table>
                             </div>
                             @else
                             <div class="bg-gray-100 rounded-md p-2">

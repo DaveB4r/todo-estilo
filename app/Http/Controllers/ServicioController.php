@@ -8,6 +8,7 @@ use App\Models\TipoServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log; // Importa la fachada Log
 
 class ServicioController extends Controller
 {
@@ -33,7 +34,7 @@ class ServicioController extends Controller
      */
     public function store(Request $request)
     {
-        \Log::info('Datos recibidos en store:', $request->all());
+        Log::info('Datos recibidos en store (antes de validación):', $request->all());
 
         try {
             DB::beginTransaction();
@@ -46,21 +47,29 @@ class ServicioController extends Controller
                 'tipo_servicio_id'  => 'required|exists:tipo_servicios,id',
                 'metodo_pago'       => 'required|string|in:Efectivo,Transferencia',
                 'observaciones'     => 'nullable|string|max:1000',
+                // ¡Añadir validación para porcentaje y precio!
+                'porcentaje'        => 'required|numeric|between:0,100', // Asumo que es un porcentaje de 0 a 100
+                'precio'            => 'required|numeric|min:0', // Asumo que el precio debe ser un número positivo
             ]);
 
+            Log::info('Datos validados:', $validatedData);
+
             // Buscar tipo de servicio seleccionado
+            // Aunque se busca, no usaremos sus valores de porcentaje y precio para la asignación final
             $tipoServicio = TipoServicio::findOrFail($validatedData['tipo_servicio_id']);
 
             // Crear y guardar el nuevo servicio
             $servicio = new Servicio();
-            $servicio->fecha             = $validatedData['fecha'];
-            $servicio->user_id           = $validatedData['user_id'];
-            $servicio->categoria         = $validatedData['categoria'];
-            $servicio->tipo_servicio_id  = $tipoServicio->id;
-            $servicio->metodo_pago       = $validatedData['metodo_pago'];
-            $servicio->observaciones     = $validatedData['observaciones'] ?? null;
-            $servicio->porcentaje        = $tipoServicio->porcentaje / 100;
-            $servicio->precio            = $tipoServicio->precio;
+            $servicio->fecha            = $validatedData['fecha'];
+            $servicio->user_id          = $validatedData['user_id'];
+            $servicio->categoria        = $validatedData['categoria'];
+            $servicio->tipo_servicio_id = $validatedData['tipo_servicio_id']; // Usamos el ID del tipo de servicio
+            $servicio->metodo_pago      = $validatedData['metodo_pago'];
+            $servicio->observaciones    = $validatedData['observaciones'] ?? null;
+
+            // ¡Aquí es el cambio crucial! Tomar los valores del request (validatedData)
+            $servicio->porcentaje = $validatedData['porcentaje'] / 100; // Guarda el valor del formulario
+            $servicio->precio = $validatedData['precio'];           // Guarda el valor del formulario
 
             $servicio->save();
 
@@ -73,9 +82,10 @@ class ServicioController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            \Log::error('Error en store:', [
+            Log::error('Error en store:', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all() // Agrega los datos del request al log para depuración
             ]);
 
             return redirect()
@@ -93,7 +103,7 @@ class ServicioController extends Controller
         $estilistas = User::all();
         $categorias = ['Peluquería', 'Uñas', 'Maquillaje'];
         $tipoServicios = TipoServicio::all();
-        return view('formulario_editar_servicio', compact('servicio', 'estilistas', 'categorias', 'tipoServicios')); // Asegúrate de tener esta vista
+        return view('formulario_editar_servicio', compact('servicio', 'estilistas', 'categorias', 'tipoServicios'));
     }
 
     /**
@@ -101,11 +111,11 @@ class ServicioController extends Controller
      */
     public function update(Request $request, Servicio $servicio)
     {
-        \Log::info('Datos recibidos en update para el servicio ' . $servicio->id . ':', $request->all());
-    
+        Log::info('Datos recibidos en update para el servicio ' . $servicio->id . ':', $request->all());
+
         try {
             DB::beginTransaction();
-    
+
             $validatedData = $request->validate([
                 'fecha'             => 'required|date',
                 'user_id'           => 'required|exists:users,id',
@@ -113,33 +123,42 @@ class ServicioController extends Controller
                 'tipo_servicio_id'  => 'required|exists:tipo_servicios,id',
                 'metodo_pago'       => 'required|string|in:Efectivo,Transferencia',
                 'observaciones'     => 'nullable|string|max:1000',
+                // ¡Añadir validación para porcentaje y precio en update también!
+                'porcentaje'        => 'required|numeric|between:0,100',
+                'precio'            => 'required|numeric|min:0',
             ]);
-    
+
+            Log::info('Datos validados para update:', $validatedData);
+
+            // Aunque se busca, no usaremos sus valores de porcentaje y precio para la asignación final
             $tipoServicio = TipoServicio::findOrFail($validatedData['tipo_servicio_id']);
-    
-            $servicio->fecha             = $validatedData['fecha'];
-            $servicio->user_id           = $validatedData['user_id'];
-            $servicio->categoria         = $validatedData['categoria'];
-            $servicio->tipo_servicio_id  = $tipoServicio->id;
-            $servicio->metodo_pago       = $validatedData['metodo_pago'];
-            $servicio->observaciones     = $validatedData['observaciones'] ?? null;
-            $servicio->porcentaje        = $tipoServicio->porcentaje / 100;
-            $servicio->precio            = $tipoServicio->precio;
-    
-            $servicio->save(); // ¡Esta línea es crucial para guardar los cambios!
-    
+
+            $servicio->fecha            = $validatedData['fecha'];
+            $servicio->user_id          = $validatedData['user_id'];
+            $servicio->categoria        = $validatedData['categoria'];
+            $servicio->tipo_servicio_id = $validatedData['tipo_servicio_id']; // Usamos el ID del tipo de servicio
+            $servicio->metodo_pago      = $validatedData['metodo_pago'];
+            $servicio->observaciones    = $validatedData['observaciones'] ?? null;
+
+            // ¡Aquí es el cambio crucial en update! Tomar los valores del request (validatedData)
+            $servicio->porcentaje = $validatedData['porcentaje'] / 100; // Guarda el valor del formulario
+            $servicio->precio = $validatedData['precio'];           // Guarda el valor del formulario
+
+            $servicio->save();
+
             DB::commit();
-    
+
             return Redirect::route('dashboard')->with('success', 'Servicio actualizado exitosamente.');
-    
+
         } catch (\Exception $e) {
             DB::rollBack();
-    
-            \Log::error('Error en update para el servicio ' . $servicio->id . ':', [
+
+            Log::error('Error en update para el servicio ' . $servicio->id . ':', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all() // Agrega los datos del request al log para depuración
             ]);
-    
+
             return Redirect::back()->withInput()->with('error', 'Error al actualizar el servicio: ' . $e->getMessage());
         }
     }
@@ -153,7 +172,7 @@ class ServicioController extends Controller
             $servicio->delete();
             return Redirect::route('dashboard')->with('success', 'Servicio eliminado correctamente.');
         } catch (\Exception $e) {
-            \Log::error('Error al eliminar el servicio ' . $servicio->id . ':', [
+            Log::error('Error al eliminar el servicio ' . $servicio->id . ':', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);

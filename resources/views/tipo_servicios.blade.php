@@ -44,8 +44,9 @@
             </aside>
 
             <main class="p-6 w-full">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Lista de servicios y categorías</h2>
-
+                <div class="flex justify-center w-full">
+                    <h1 class="text-3xl italic font-serif text-gray-800">Lista de servicios y categorías</h1>
+                </div>
                 @if(session('success'))
                 <div class="w-full h-8 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4 flex items-center justify-between shadow">
                     <span class="text-sm">

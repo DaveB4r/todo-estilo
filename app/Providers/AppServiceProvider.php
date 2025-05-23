@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon; 
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -43,3 +44,17 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 }
+class AppServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        // Configurar el idioma de Carbon globalmente para toda la aplicación
+        Carbon::setLocale('es');
+    }
+}
+
