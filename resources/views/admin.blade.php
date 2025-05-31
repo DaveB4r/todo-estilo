@@ -39,15 +39,14 @@
                 <a href="{{ route('usuarios.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Usuarios</a>
                 <a href="{{ route('tipo_servicios.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Tipo de servicios</a>
                 <a href="{{ route('servicios.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">
-                    Registrar Servicios
+                    Registrar servicios
                 </a>
                 <a href="{{ route('ingresos.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Ingresos</a>
                 <a href="{{ route('salidas.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Salidas</a>
                 <a href="liquidaciones" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Liquidación de empleados</a>
                 <a href="{{ route('cuentas_por_cobrar.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Cuentas por cobrar</a>
                 <a href="{{ route('cuadre_de_caja') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Cuadre de caja</a>
-                <!--<a href="{{ route('indicadores.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Indicadores</a>-->
-            </nav>
+                <a href="{{ route('cuentas-por-pagar.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Cuentas por pagar</a>            </nav>
         </aside>
 
         <div class="w-full">

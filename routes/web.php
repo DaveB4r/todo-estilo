@@ -14,6 +14,7 @@ use App\Http\Controllers\CuentasPorCobrarController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CuadreDeCajaController;
 use App\Http\Controllers\IndicadoresController;
+use App\Http\Controllers\CuentasPorPagarController;
 
 
 // Rutas públicas
@@ -53,8 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/servicios', ServicioController::class);
 
 
-    // Rutas de salidas 
-    // Route::resource('salidas', SalidaController::class);
+  
 
     // Rutas de registrar ingresos
 
@@ -103,7 +103,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cuadre_de_caja', [CuadreDeCajaController::class, 'index'])->name('cuadre_de_caja');
 
     Route::get('/indicadores', [IndicadoresController::class, 'index'])->name('indicadores.index');
+    // Dentro de routes/web.php
+    Route::resource('cuentas-por-pagar', CuentasPorPagarController::class);
 });
-
 // Rutas de autenticación
 require __DIR__ . '/auth.php';

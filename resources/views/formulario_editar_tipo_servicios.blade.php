@@ -9,6 +9,7 @@
 </head>
 
 {{-- Contenedor principal para centrar todo el contenido en la pantalla --}}
+
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     {{-- Contenedor del formulario con ancho limitado, borde y sombra --}}
     <div class="bg-white p-8 rounded-lg shadow-xl border-4 border-gray-400 w-11/12 md:w-3/4 lg:w-1/2">
@@ -23,13 +24,13 @@
         <form action="{{ route('tipo_servicios.update', $tipoServicio->id) }}" method="POST" class="space-y-4">
             @method('PUT') {{-- O @method('PATCH') --}}
             @if ($errors->any())
-                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-                    <ul class="list-disc pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
             @csrf
             <table class="w-full">
@@ -59,8 +60,7 @@
                             id="descripcion"
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             value="{{ $tipoServicio->descripcion }}"
-                            required
-                        >
+                            required>
                     </td>
                 </tr>
                 <tr>
@@ -78,8 +78,7 @@
                             min="0"
                             max="100"
                             step="0.01"
-                            placeholder="Ej: 25.5"
-                        >
+                            placeholder="Ej: 25.5">
                     </td>
                 </tr>
                 <tr>
@@ -92,12 +91,11 @@
                             name="precio"
                             id="precio"
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
-                            value="{{ $tipoServicio->precio }}"
+                            value="{{ intval($tipoServicio->precio) }}" {{-- ¡ESTE ES EL CAMBIO CLAVE! --}}
                             required
                             min="0"
                             step="1"
-                            placeholder="Ej: 15000"
-                        >
+                            placeholder="Ej: 15000">
                     </td>
                 </tr>
                 <tr>
@@ -112,4 +110,5 @@
         </form>
     </div>
 </body>
+
 </html>

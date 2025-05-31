@@ -150,7 +150,7 @@
         </div>
 
         <section id="quienes_somos" class="w-full bg-white py-12">
-            <h2 class="text-3xl italic font-serif text-gray-800 text-center mb-8">Quiénes somos</h2>
+            <h2 class="text-3xl italic font-serif text-gray-800 text-center mb-8">¿Quiénes somos?</h2>
             <div class="flex flex-col md:flex-row items-center max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="w-full md:w-1/2 h-80 md:h-[500px]">
                     <img src="/img/Slider_2.jpg" alt="Quienes somos" class="w-full h-full object-cover rounded-lg shadow-md">

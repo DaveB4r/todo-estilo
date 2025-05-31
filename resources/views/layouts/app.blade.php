@@ -20,14 +20,14 @@
                     </div>
                     <!-- Nombre del negocio -->
                     <div class="ml-9 flex items-center">
-                    <h1 class="text-3xl italic font-serif text-gray-800">Todo Estilo</h1>
+                        <h1 class="text-3xl italic font-serif text-gray-800">Todo Estilo</h1>
                     </div>
                 </div>
                 <!-- Menú de navegación -->
                 <div class="flex items-center">
                     <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2">Inicio sesión</a>
                     <a href="#servicios" class="text-gray-600 hover:text-gray-900 px-3 py-2">Servicios</a>
-                    <a href="#quienes_somos" class="text-gray-600 hover:text-gray-900 px-3 py-2">Quiénes somos</a>
+                    <a href="#quienes_somos" class="text-gray-600 hover:text-gray-900 px-3 py-2">¿Quiénes somos?</a>
                 </div>
             </div>
         </div>
@@ -83,40 +83,28 @@
                         <!-- Tarjeta de servicio 1 -->
                         <div class="bg-white shadow-lg rounded-lg p-6">
                             <h3 class="text-xl font-semibold mb-4">Servicios de peluquería, tintes, quimicos y alisados</h3>
-                            <p class="text-gray-600">Servicios integrales que incluyen cortes modernos para todas las edades, peinados para todo tipo de eventos especiales, tintes profesionales coloración completa, mechas, balayage y retoques. También realizamos tratamientos químicos como alisados progresivos, keratina e hidrolizados. Además, contamos con tratamientos capilares para hidratar, fortalecer y revitalizar el cabello según sus necesidades.</p>
 
+                            <p class="text-gray-600 mt-4">Servicios integrales que incluyen cortes modernos para todas las edades, peinados para todo tipo de eventos especiales, tintes profesionales coloración completa, mechas, balayage y retoques. También realizamos tratamientos químicos como alisados progresivos, keratina e hidrolizados. Además, contamos con tratamientos capilares para hidratar, fortalecer y revitalizar el cabello según sus necesidades.</p>
+                            <div class="flex items-center space-x-4 mb-4 mt-4">
+                                <p class="text-lg font-semibold m-0 p-0">Pide tu cita aquí</p>
+                                <a href="https://wa.me/573128845647?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
+                                    target="_blank"
+                                    class="inline-block bg-white hover:bg-gray-50 text-green-600 border border-green-500 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm">
+                                    WhatsApp
+                                </a>
+                            </div>
                             <!-- Carrusel de imágenes servicio 1-->
                             <div class="relative overflow-hidden">
-                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div x-data="{
-                                    activeSlide: 0,
-                                        slides: [
-                                            '/img/Slider_2.jpg',
-                                            '/img/Slider_3.jpg',
-                                            '/img/Slider_4.jpg'
-                                        ],
-                                    next() {
-                                        this.activeSlide = (this.activeSlide + 1) % this.slides.length;
-                                    },
-                                    prev() {
-                                        this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length;
-                                    }
-                                }" class="relative">
-                                        <!-- Slides -->
-                                        <div class="bg-gray-300 h-96 rounded-lg overflow-hidden relative">
-                                            <template x-for="(slide, index) in slides" :key="index">
-                                                <div x-show="activeSlide === index" class="absolute inset-0 transition-opacity duration-700">
-                                                    <img :src="slide" alt="" class="w-full h-full object-cover">
-                                                </div>
-                                            </template>
-
-
-                                            <!-- Controles -->
-                                            <div class="absolute inset-0 flex justify-between items-center px-4">
-                                                <button @click="prev" class="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">&larr;</button>
-                                                <button @click="next" class="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">&rarr;</button>
-                                            </div>
-                                        </div>
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                                    <div class="bg-gray-300 h-96 md:h-[500px] rounded-lg overflow-hidden relative">
+                                        <video class="absolute top-0 left-0 w-full h-full object-cover"
+                                            src="{{ asset('videos/peluqueria1.mp4') }}"
+                                            autoplay
+                                            loop
+                                            muted
+                                            playsinline>
+                                            Tu navegador no soporta el tag de video.
+                                        </video>
                                     </div>
                                 </div>
                             </div>
@@ -126,40 +114,26 @@
                         <div class="bg-white shadow-lg rounded-lg p-6">
                             <h3 class="text-xl font-semibold mb-4">Maquillaje profesional</h3>
                             <p class="text-gray-600">Maquillaje profesional para todo tipo de eventos, desde bodas y fiestas hasta sesiones fotográficas, eventos nocturnos y temáticos. Nuestro equipo se enfoca en realzar tu belleza natural con productos de alta calidad y técnicas actualizadas, creando looks personalizados que se adaptan a tu estilo, tipo de evento y necesidades. Ya sea un maquillaje natural, glamuroso o artístico, garantizamos un acabado impecable y duradero</p>
-
+                            <div class="flex items-center space-x-4 mb-4 mt-4">
+                                <p class="text-lg font-semibold m-0 p-0">Pide tu cita aquí</p>
+                                <a href="https://wa.me/573128845647?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
+                                    target="_blank"
+                                    class="inline-block bg-white hover:bg-gray-50 text-green-600 border border-green-500 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm">
+                                    WhatsApp
+                                </a>
+                            </div>
                             <!-- Carrusel de imágenes servicio 2-->
                             <div class="relative overflow-hidden">
                                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                                    <div x-data="{
-                                    activeSlide: 0,
-                                        slides: [
-                                            '/img/Slider_2.jpg',
-                                            '/img/Slider_3.jpg',
-                                            '/img/Slider_4.jpg'
-                                        ],
-                                    next() {
-                                        this.activeSlide = (this.activeSlide + 1) % this.slides.length;
-                                    },
-                                    prev() {
-                                        this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length;
-                                    }
-                                }" class="relative">
-                                        <!-- Slides -->
-                                        <div class="bg-gray-300 h-96 rounded-lg overflow-hidden relative">
-                                            <template x-for="(slide, index) in slides" :key="index">
-                                                <div x-show="activeSlide === index" class="absolute inset-0 transition-opacity duration-700">
-                                                    <img :src="slide" alt="" class="w-full h-full object-cover">
-                                                </div>
-                                            </template>
-
-
-                                            <!-- Controles -->
-                                            <div class="absolute inset-0 flex justify-between items-center px-4">
-                                                <button @click="prev" class="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">&larr;</button>
-                                                <button @click="next" class="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">&rarr;</button>
-                                            </div>
-                                        </div>
-
+                                    <div class="bg-gray-300 h-96 md:h-[500px] rounded-lg overflow-hidden relative">
+                                        <video class="absolute top-0 left-0 w-full h-full object-cover"
+                                            src="{{ asset('videos/uñas1.mp4') }}"
+                                            autoplay
+                                            loop
+                                            muted
+                                            playsinline>
+                                            Tu navegador no soporta el tag de video.
+                                        </video>
                                     </div>
                                 </div>
                             </div>
@@ -168,42 +142,26 @@
                         <div class="bg-white shadow-lg rounded-lg p-6">
                             <h3 class="text-xl font-semibold mb-4">Manicura y pedicura</h3>
                             <p class="text-gray-600">Servicios de manicura y pedicura combinan estética, cuidado y bienestar para mantener tus uñas y piel en óptimas condiciones. Ofrecemos desde opciones básicas y semipermanentes hasta tratamientos spa, uñas esculpidas, decoración personalizada y pedicura clínica. Cada sesión incluye atención a cutículas, exfoliación, hidratación y masaje, brindándote no solo una imagen impecable, sino también una experiencia relajante y revitalizante</p>
-
+                            <div class="flex items-center space-x-4 mb-4 mt-4">
+                                <p class="text-lg font-semibold m-0 p-0">Pide tu cita aquí</p>
+                                <a href="https://wa.me/573128845647?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
+                                    target="_blank"
+                                    class="inline-block bg-white hover:bg-gray-50 text-green-600 border border-green-500 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm">
+                                    WhatsApp
+                                </a>
+                            </div>
                             <!-- Carrusel de imágenes principal -->
                             <div class="relative overflow-hidden">
                                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                                    <div x-data="{
-                                    activeSlide: 0,
-                                        slides: [
-                                            '/img/Slider_2.jpg',
-                                            '/img/Slider_3.jpg',
-                                            '/img/Slider_4.jpg'
-                                        ],
-                                    next() {
-                                        this.activeSlide = (this.activeSlide + 1) % this.slides.length;
-                                    },
-                                    prev() {
-                                        this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length;
-                                    }
-                                }" class="relative">
-                                        <!-- Slides -->
-                                        <div class="bg-gray-300 h-96 rounded-lg overflow-hidden relative">
-                                            <template x-for="(slide, index) in slides" :key="index">
-                                                <div x-show="activeSlide === index" class="absolute inset-0 transition-opacity duration-700">
-                                                    <img :src="slide" alt="" class="w-full h-full object-cover">
-                                                </div>
-                                            </template>
-
-
-                                            <!-- Controles -->
-                                            <div class="absolute inset-0 flex justify-between items-center px-4">
-                                                <button @click="prev" class="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">&larr;</button>
-                                                <button @click="next" class="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">&rarr;</button>
-                                            </div>
-                                        </div>
-                                        <div class="text-center py-1">
-
-                                        </div>
+                                    <div class="bg-gray-300 h-96 md:h-[500px] rounded-lg overflow-hidden relative">
+                                        <video class="absolute top-0 left-0 w-full h-full object-cover"
+                                            src="{{ asset('videos/maquillaje1.mp4') }}"
+                                            autoplay
+                                            loop
+                                            muted
+                                            playsinline>
+                                            Tu navegador no soporta el tag de video.
+                                        </video>
                                     </div>
                                 </div>
                             </div>
@@ -214,13 +172,20 @@
 
             <!-- Sección de Quienes Somos -->
             <section id="quienes_somos" class="w-full bg-white py-12">
-                <h2 class="text-3xl italic font-serif text-gray-800 text-center mb-8">Quiénes somos</h2>
+                <h2 class="text-3xl italic font-serif text-gray-800 text-center mb-8">¿Quiénes somos?</h2>
                 <div class="flex flex-col md:flex-row items-center max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 
 
                     <!-- Imagen lado izquierdo -->
-                    <div class="w-full md:w-1/2 h-80 md:h-[500px]">
-                        <img src="/img/Slider_2.jpg" alt="Quienes somos" class="w-full h-full object-cover rounded-lg shadow-md">
+                    <div class="w-full md:w-1/2 h-80 md:h-[500px] relative overflow-hidden rounded-lg shadow-md">
+                        <video class="absolute top-0 left-0 w-full h-full object-cover"
+                            src="{{ asset('videos/presentacion1.mp4') }}" {{-- Cambiado a 'img' según tu ubicación --}}
+                            autoplay
+                            loop
+                            muted
+                            playsinline>
+                            Tu navegador no soporta el tag de video.
+                        </video>
                     </div>
 
                     <!-- Texto lado derecho -->
