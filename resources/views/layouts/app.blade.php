@@ -28,6 +28,7 @@
                     <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2">Inicio sesión</a>
                     <a href="#servicios" class="text-gray-600 hover:text-gray-900 px-3 py-2">Servicios</a>
                     <a href="#quienes_somos" class="text-gray-600 hover:text-gray-900 px-3 py-2">¿Quiénes somos?</a>
+                    <a href="#contactanos" class="text-gray-600 hover:text-gray-900 px-3 py-2">Contáctanos</a>
                 </div>
             </div>
         </div>
@@ -202,6 +203,52 @@
 
 
         </div>
+        <section id="contactanos" class="w-full bg-gray-200 py-12">
+            <h2 class="text-3xl italic font-serif text-gray-800 text-center mb-8">Contáctanos</h2>
+            <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white shadow-lg rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Nuestra Información</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li>
+                            <p class="font-medium">Facebook:</p>
+                            <a href="https://www.facebook.com/people/Todo-Estilo-Peluquer%C3%ADa-y-Tienda-del-Peluquero/100046478302040/" target="_blank" class="text-blue-600 hover:underline">Todo Estilo - Peluquería y Tienda del Peluquero</a>
+                        </li>
+                        <li>
+                            <p class="font-medium">Instagram:</p>
+                            <a href="https://www.instagram.com/peluqueria_todo_estilo_/" target="_blank" class="text-pink-600 hover:underline">@peluqueria_todo_estilo_</a>
+                        </li>
+                        <li>
+                            <p class="font-medium">Correo:</p>
+                            <a href="mailto:todo_estilo@gmail.com" class="text-gray-700 hover:underline">todo_estilo@gmail.com</a>
+                        </li>
+                        <li>
+                            <p class="font-medium">Whatsapp:</p>
+                            <a href="https://wa.me/573184644398" target="_blank" class="text-green-600 hover:underline">3184644398</a>
+                        </li>
+                        <li>
+                            <p class="font-medium">Dirección:</p>
+                            <p>Cl. 36 #70 - 13 local 3, San Gabriel, Itagüí</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <h3 class="text-xl font-semibold p-6 pb-0 text-gray-800">Ubícanos</h3>
+                    <div class="p-6">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1950000000003!2d-75.59765438523094!3d6.216298595460515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e442867d7d7d7d7%3A0x6e7e7e7e7e7e7e7e!2sCl.%2036%20%2370%20-%2013%20local%203%2C%20San%20Gabriel%2C%20Itag%C3%BC%C3%AD%2C%20Antioquia!5e0!3m2!1ses!2sco!4v1678901234567!5m2!1ses!2sco"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->

@@ -2,24 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente; // Importa el modelo Cliente
-use App\Models\CuentaPorCobrar; // Importa el modelo CuentaPorCobrar
-use App\Models\TipoServicio; // Importa el modelo TipoServicio (si lo necesitas para el formulario)
+use App\Models\Cliente;
+use App\Models\CuentaPorCobrar;
+use App\Models\TipoServicio;
 use Illuminate\Http\Request;
 
 class CuentasPorCobrarController extends Controller
 {
     /**
-     * Muestra el listado de cuentas por cobrar y los clientes.
+     * Muestra el listado de cuentas por cobrar y los clientes, con opción de filtro por estado.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cuentasPorCobrar = CuentaPorCobrar::all(); // Obtiene todas las cuentas por cobrar
-        $clientes = Cliente::all(); // Obtiene todos los clientes de la base de datos
+        // Inicia una consulta para CuentaPorCobrar e incluye las relaciones Cliente y TipoServicio
+        $query = CuentaPorCobrar::query()->with(['cliente', 'tipoServicio']);
 
-        return view('cuentas_por_cobrar.index', compact('cuentasPorCobrar', 'clientes'));
+        // Aplica el filtro por estado si se proporciona en la URL
+        if ($request->has('estado') && $request->input('estado') != '') {
+            $query->where('estado', $request->input('estado'));
+        }
+
+        // Obtiene las cuentas por cobrar filtradas o todas si no hay filtro
+        $cuentasPorCobrar = $query->get();
+
+        // Obtiene todos los clientes y tipos de servicio para pasarlos a la vista, si son necesarios (ej. para el sidebar o futuros selectores)
+        $clientes = Cliente::all();
+        $tiposServicio = TipoServicio::all();
+
+        return view('cuentas_por_cobrar.index', compact('cuentasPorCobrar', 'clientes', 'tiposServicio'));
     }
 
     /**
@@ -29,10 +42,10 @@ class CuentasPorCobrarController extends Controller
      */
     public function create()
     {
-        // Aquí pasamos la lista de clientes y tipos de servicio para el formulario
         $clientes = Cliente::all();
-        $tiposServicio = TipoServicio::all(); // Asegúrate de importar el modelo TipoServicio
-        return view('cuentas_por_cobrar/formulario_registrar_cuenta_por_cobrar', compact('clientes', 'tiposServicio')); // Asegúrate de tener esta vista
+        $tiposServicio = TipoServicio::all();
+        // Asumiendo que la vista para crear es 'cuentas_por_cobrar.formulario_registrar_cuenta_por_cobrar'
+        return view('cuentas_por_cobrar.formulario_registrar_cuenta_por_cobrar', compact('clientes', 'tiposServicio'));
     }
 
     /**
@@ -42,21 +55,24 @@ class CuentasPorCobrarController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'cliente_id' => 'required|exists:clientes,identificacion',
-        'servicio_id' => 'required|exists:tipo_servicios,id',
-        'fecha' => 'required|date',
-        'valor' => 'required|numeric|min:0', // Cambia 'integer' a 'numeric'
-        'observaciones' => 'nullable|string',
-    ]);
+    {
+        $request->validate([
+            // ¡CAMBIO CLAVE AQUÍ!
+            // Ahora validamos que el cliente_id enviado exista en la columna 'identificacion' de la tabla 'clientes'.
+            'cliente_id' => 'required|exists:clientes,identificacion',
+            // VALIDADO: Validamos que el tipo_servicio_id enviado exista en la columna 'id' de la tabla 'tipo_servicios'.
+            'tipo_servicio_id' => 'required|exists:tipo_servicios,id',
+            'fecha' => 'required|date',
+            'valor' => 'required|numeric|min:0',
+            'observaciones' => 'nullable|string|max:255',
+            // VALIDADO: Validamos que el estado sea 'Pendiente' o 'Paga'.
+            'estado' => 'required|in:Pendiente,Paga',
+        ]);
 
-    CuentaPorCobrar::create($request->all());
+        CuentaPorCobrar::create($request->all());
 
-    return redirect()->route('cuentas_por_cobrar.index')->with('success', 'Cuenta por cobrar creada exitosamente.');
-}
-
-    // Puedes agregar más métodos para editar, eliminar, mostrar detalles de cuentas por cobrar, etc.
+        return redirect()->route('cuentas_por_cobrar.index')->with('success', 'Cuenta por cobrar creada exitosamente.');
+    }
 
     /**
      * Muestra el formulario para editar una cuenta por cobrar existente.
@@ -68,7 +84,8 @@ class CuentasPorCobrarController extends Controller
     {
         $clientes = Cliente::all();
         $tiposServicio = TipoServicio::all();
-        return view('cuentas_por_cobrar/formulario_editar_cuenta_por_cobrar', compact('cuentaPorCobrar', 'clientes', 'tiposServicio'));
+        // Asumiendo que la vista para editar es 'cuentas_por_cobrar.formulario_editar_cuenta_por_cobrar'
+        return view('cuentas_por_cobrar.formulario_editar_cuenta_por_cobrar', compact('cuentaPorCobrar', 'clientes', 'tiposServicio'));
     }
 
     /**
@@ -81,11 +98,16 @@ class CuentasPorCobrarController extends Controller
     public function update(Request $request, CuentaPorCobrar $cuentaPorCobrar)
     {
         $request->validate([
+            // ¡CAMBIO CLAVE AQUÍ!
+            // Ahora validamos que el cliente_id enviado exista en la columna 'identificacion' de la tabla 'clientes'.
             'cliente_id' => 'required|exists:clientes,identificacion',
-            'servicio_id' => 'required|exists:tipo_servicios,id',
+            // VALIDADO: Validamos que el tipo_servicio_id enviado exista en la columna 'id' de la tabla 'tipo_servicios'.
+            'tipo_servicio_id' => 'required|exists:tipo_servicios,id',
             'fecha' => 'required|date',
             'valor' => 'required|numeric|min:0',
-            'observaciones' => 'nullable|string',
+            'observaciones' => 'nullable|string|max:255',
+            // VALIDADO: Validamos que el estado sea 'Pendiente' o 'Paga'.
+            'estado' => 'required|in:Pendiente,Paga',
         ]);
 
         $cuentaPorCobrar->update($request->all());

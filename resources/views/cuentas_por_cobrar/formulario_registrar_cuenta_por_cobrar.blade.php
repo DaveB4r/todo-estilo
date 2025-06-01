@@ -60,7 +60,7 @@
                             <option value="" disabled {{ !old('cliente_id') ? 'selected' : '' }}>Seleccione un cliente</option>
                             @foreach($clientes as $cliente)
                                 <option
-                                    value="{{ $cliente->identificacion }}"
+                                    value="{{ $cliente->identificacion }}" {{-- ¡CAMBIO CRUCIAL AQUÍ! Ahora envía 'identificacion' --}}
                                     {{ old('cliente_id') == $cliente->identificacion ? 'selected' : '' }}
                                 >
                                     {{ $cliente->nombre }} {{ $cliente->apellido }}
@@ -71,20 +71,20 @@
                 </tr>
 
                 <tr>
-                    <td class="pr-4 text-right py-2"><label for="servicio_id" class="text-gray-700 text-base">Servicio</label></td>
+                    <td class="pr-4 text-right py-2"><label for="tipo_servicio_id" class="text-gray-700 text-base">Servicio</label></td>
                     <td>
                         <select
-                            name="servicio_id"
-                            id="servicio_id"
+                            name="tipo_servicio_id"
+                            id="tipo_servicio_id"
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             required
                         >
-                            <option value="" disabled {{ !old('servicio_id') ? 'selected' : '' }}>Seleccione un servicio</option>
+                            <option value="" disabled {{ !old('tipo_servicio_id') ? 'selected' : '' }}>Seleccione un servicio</option>
                             @foreach($tiposServicio as $servicio)
                                 <option
                                     value="{{ $servicio->id }}"
                                     data-precio="{{ $servicio->precio }}"
-                                    {{ old('servicio_id') == $servicio->id ? 'selected' : '' }}
+                                    {{ old('tipo_servicio_id') == $servicio->id ? 'selected' : '' }}
                                 >
                                     {{ $servicio->nombre }}
                                 </option>
@@ -109,6 +109,24 @@
                         >
                     </td>
                 </tr>
+
+                {{--- NUEVO CAMPO 'ESTADO' ---}}
+                <tr>
+                    <td class="pr-4 text-right py-2"><label for="estado" class="text-gray-700 text-base">Estado</label></td>
+                    <td>
+                        <select
+                            name="estado"
+                            id="estado"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            required
+                        >
+                            <option value="" disabled {{ !old('estado') ? 'selected' : '' }}>Seleccione un estado</option>
+                            <option value="Pendiente" {{ old('estado', 'Pendiente') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                            <option value="Paga" {{ old('estado') == 'Paga' ? 'selected' : '' }}>Paga</option>
+                        </select>
+                    </td>
+                </tr>
+                {{--- FIN NUEVO CAMPO 'ESTADO' ---}}
 
                 <tr>
                     <td class="pr-4 text-right py-2 align-top"><label for="observaciones" class="text-gray-700 text-base">Observaciones</label></td>
@@ -142,7 +160,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const servicioSelect = document.getElementById('servicio_id');
+            const servicioSelect = document.getElementById('tipo_servicio_id');
             const valorInput = document.getElementById('valor');
 
             function actualizarPrecio() {
@@ -161,7 +179,7 @@
 
             servicioSelect.addEventListener('change', actualizarPrecio);
 
-            // Llamar a la función al cargar la página para prellenar el valor
+            // Llama a la función al cargar la página para prellenar el valor
             // si un servicio ya está seleccionado (por ejemplo, si se usa old())
             if (servicioSelect.value) {
                 actualizarPrecio();

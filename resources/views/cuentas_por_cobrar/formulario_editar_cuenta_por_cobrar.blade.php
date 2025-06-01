@@ -32,7 +32,7 @@
                 </div>
             @endif
             @csrf
-            @method('PUT') {{-- Especificamos el método HTTP PUT para la actualización --}}
+            @method('PUT')
 
             <table class="w-full">
                 <tr>
@@ -58,10 +58,11 @@
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             required
                         >
-                            <option value="" disabled {{ !old('cliente_id', $cuentaPorCobrar->cliente_id) ? 'selected' : '' }}>Seleccione un cliente</option>
+                            {{-- Consider removing this disabled option if a client is always expected to be selected --}}
+                            <option value="" disabled>Seleccione un cliente</option>
                             @foreach($clientes as $cliente)
                                 <option
-                                    value="{{ $cliente->identificacion }}"
+                                    value="{{ $cliente->identificacion }}" {{-- ¡CAMBIO CRUCIAL AQUÍ! Ahora envía 'identificacion' --}}
                                     {{ old('cliente_id', $cuentaPorCobrar->cliente_id) == $cliente->identificacion ? 'selected' : '' }}
                                 >
                                     {{ $cliente->nombre }} {{ $cliente->apellido }}
@@ -72,20 +73,21 @@
                 </tr>
 
                 <tr>
-                    <td class="pr-4 text-right py-2"><label for="servicio_id" class="text-gray-700 text-base">Servicio</label></td>
+                    <td class="pr-4 text-right py-2"><label for="tipo_servicio_id" class="text-gray-700 text-base">Servicio</label></td>
                     <td>
                         <select
-                            name="servicio_id"
-                            id="servicio_id"
+                            name="tipo_servicio_id"
+                            id="tipo_servicio_id"
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             required
                         >
-                            <option value="" disabled {{ !old('servicio_id', $cuentaPorCobrar->servicio_id) ? 'selected' : '' }}>Seleccione un servicio</option>
+                            {{-- Consider removing this disabled option if a service is always expected to be selected --}}
+                            <option value="" disabled>Seleccione un servicio</option>
                             @foreach($tiposServicio as $servicio)
                                 <option
                                     value="{{ $servicio->id }}"
                                     data-precio="{{ $servicio->precio }}"
-                                    {{ old('servicio_id', $cuentaPorCobrar->servicio_id) == $servicio->id ? 'selected' : '' }}
+                                    {{ old('tipo_servicio_id', $cuentaPorCobrar->tipo_servicio_id) == $servicio->id ? 'selected' : '' }}
                                 >
                                     {{ $servicio->nombre }}
                                 </option>
@@ -110,6 +112,23 @@
                         >
                     </td>
                 </tr>
+
+                {{--- CAMPO 'ESTADO' ---}}
+                <tr>
+                    <td class="pr-4 text-right py-2"><label for="estado" class="text-gray-700 text-base">Estado</label></td>
+                    <td>
+                        <select
+                            name="estado"
+                            id="estado"
+                            class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
+                            required
+                        >
+                            <option value="Pendiente" {{ old('estado', $cuentaPorCobrar->estado) == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                            <option value="Paga" {{ old('estado', $cuentaPorCobrar->estado) == 'Paga' ? 'selected' : '' }}>Paga</option>
+                        </select>
+                    </td>
+                </tr>
+                {{--- FIN CAMPO 'ESTADO' ---}}
 
                 <tr>
                     <td class="pr-4 text-right py-2 align-top"><label for="observaciones" class="text-gray-700 text-base">Observaciones</label></td>
@@ -143,23 +162,26 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const servicioSelect = document.getElementById('servicio_id');
+            const servicioSelect = document.getElementById('tipo_servicio_id');
             const valorInput = document.getElementById('valor');
 
             function actualizarPrecio() {
                 const selectedOption = servicioSelect.options[servicioSelect.selectedIndex];
-                // Asegúrate de que el valor data-precio sea un número válido.
-                // Si viene como "100,000.00" por ejemplo, quita las comas para parsear a float.
-                const precio = selectedOption ? parseFloat(selectedOption.getAttribute('data-precio').replace(/,/g, '')) : '';
-                valorInput.value = isNaN(precio) ? '' : precio.toFixed(2); // Formatea a 2 decimales si es un número
+                let precio = selectedOption ? selectedOption.getAttribute('data-precio') : '';
+
+                if (precio) {
+                    precio = parseFloat(precio.replace(/,/g, ''));
+                    valorInput.value = isNaN(precio) ? '' : precio.toFixed(2);
+                } else {
+                    valorInput.value = '';
+                }
             }
 
             servicioSelect.addEventListener('change', actualizarPrecio);
 
-            // No llamar a actualizarPrecio() al cargar la página si el valor ya viene de $cuentaPorCobrar,
-            // ya que el valor preestablecido debe ser el de la cuenta por cobrar que se está editando.
-            // Si deseas que siempre se sobreescriba con el precio del servicio, descomenta la siguiente línea.
-            // actualizarPrecio();
+            // No llamamos a actualizarPrecio() al cargar en el formulario de edición
+            // para no sobrescribir el valor actual de la cuenta por cobrar con el precio del servicio,
+            // a menos que el usuario cambie explícitamente el servicio.
         });
     </script>
 </body>

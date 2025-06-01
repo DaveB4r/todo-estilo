@@ -10,6 +10,7 @@
 
 <body>
     <div class="min-h-screen bg-gray-100">
+        {{-- Barra de Navegación Superior --}}
         <nav class="bg-white shadow-lg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
@@ -36,16 +37,31 @@
             </div>
         </nav>
 
+        {{-- Contenido Principal: Sidebar y Área de Contenido --}}
         <div class="flex min-h-screen bg-gray-100">
+            {{-- Barra Lateral (Sidebar) --}}
             <aside class="w-64 bg-gray-500 shadow-md px-4 py-6 space-y-4 text-white">
                 <nav class="space-y-2">
                     <a href="{{ route('clientes.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Crear cliente</a>
                     <a href="{{ route('cuentas_por_cobrar.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Nueva cuenta por cobrar</a>
+
+                    {{-- FILTRO POR ESTADO AÑADIDO --}}
+                    <form action="{{ route('cuentas_por_cobrar.index') }}" method="GET" class="px-1 mt-4 space-y-1">
+                        <label for="estado_filter" class="block text-white text-sm font-medium">Filtrar Cuentas por Estado:</label>
+                        <select name="estado" id="estado_filter" onchange="this.form.submit()" class="w-full px-2 py-1 rounded text-gray-800">
+                            <option value="">-- Todos --</option>
+                            <option value="Pendiente" {{ request('estado') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                            <option value="Paga" {{ request('estado') == 'Paga' ? 'selected' : '' }}>Paga</option>
+                        </select>
+                    </form>
+                    {{-- FIN FILTRO POR ESTADO --}}
                 </nav>
             </aside>
+
+            {{-- Área de Contenido Principal --}}
             <main class="flex-1 py-4 px-6 grid grid-cols-4 gap-4">
                 {{-- Acá debería salir el mensaje de confirmación --}}
-                <div class="col-span-4"> {{-- Este div debe ser col-span-4 para que el mensaje ocupe todo el ancho arriba de las tablas --}}
+                <div class="col-span-4">
                     @if (session('success'))
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
                         <span class="block sm:inline">{{ session('success') }}</span>
@@ -125,6 +141,9 @@
                                     <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
                                     <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
                                     <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Observaciones</th>
+                                    {{-- COLUMNA ESTADO AÑADIDA --}}
+                                    <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                    {{-- FIN COLUMNA ESTADO --}}
                                     <th scope="col" class="relative px-3 py-2">
                                         <span class="sr-only">Acciones</span>
                                     </th>
@@ -138,6 +157,13 @@
                                     <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ $cuenta->tipoServicio->nombre }}</td>
                                     <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ number_format($cuenta->valor, 2) }}</td>
                                     <td class="px-3 py-2 text-sm text-gray-900">{{ Str::limit($cuenta->observaciones, 20) ?? '-' }}</td>
+                                    {{-- VALOR DEL ESTADO AÑADIDO --}}
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $cuenta->estado === 'Pendiente' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
+                                            {{ $cuenta->estado }}
+                                        </span>
+                                    </td>
+                                    {{-- FIN VALOR DEL ESTADO --}}
                                     <td class="px-3 py-2 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex justify-end items-center space-x-4">
                                             <a href="{{ route('cuentas_por_cobrar.edit', $cuenta) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>

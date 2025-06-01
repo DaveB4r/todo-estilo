@@ -24,10 +24,11 @@ class CuentaPorCobrar extends Model
      */
     protected $fillable = [
         'cliente_id',
-        'servicio_id',
+        'tipo_servicio_id', // ¡CAMBIO AQUÍ! Consistentemente a 'tipo_servicio_id'
         'fecha',
         'valor',
         'observaciones',
+        'estado',
     ];
 
     /**
@@ -37,6 +38,8 @@ class CuentaPorCobrar extends Model
      */
     public function cliente(): BelongsTo
     {
+        // El segundo parámetro es la clave foránea en CuentasPorCobrar ('cliente_id').
+        // El tercer parámetro es la clave primaria en Cliente que 'cliente_id' referencia ('identificacion').
         return $this->belongsTo(Cliente::class, 'cliente_id', 'identificacion');
     }
 
@@ -47,6 +50,8 @@ class CuentaPorCobrar extends Model
      */
     public function tipoServicio(): BelongsTo
     {
-        return $this->belongsTo(TipoServicio::class, 'servicio_id');
+        // ¡CAMBIO AQUÍ! Si el campo en la tabla 'cuentas_por_cobrar' es 'tipo_servicio_id'
+        // y el ID en 'tipo_servicios' es 'id' (lo predeterminado), no se necesita el tercer parámetro.
+        return $this->belongsTo(TipoServicio::class, 'tipo_servicio_id');
     }
 }
