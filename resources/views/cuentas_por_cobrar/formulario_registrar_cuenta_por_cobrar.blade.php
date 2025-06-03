@@ -21,7 +21,7 @@
             <h1 class="text-3xl italic font-serif text-gray-800 text-center">Registrar cuenta por cobrar</h1>
         </div>
 
-        <form action="{{ route('cuentas_por_cobrar.store') }}" method="POST" class="space-y-4">
+        <form action="{{ route('cuentasPorCobrar.store') }}" method="POST" class="space-y-4">
             @if ($errors->any())
                 <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
                     <ul class="list-disc pl-5">
@@ -148,7 +148,7 @@
                                 Registrar cuenta por cobrar
                             </button>
 
-                            <button type="button" onclick="window.location.href='{{ route('cuentas_por_cobrar.index') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
+                            <button type="button" onclick="window.location.href='{{ route('cuentasPorCobrar.index') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
                                 Cancelar
                             </button>
                         </div>

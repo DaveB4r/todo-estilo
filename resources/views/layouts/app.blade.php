@@ -88,7 +88,7 @@
                             <p class="text-gray-600 mt-4">Servicios integrales que incluyen cortes modernos para todas las edades, peinados para todo tipo de eventos especiales, tintes profesionales coloración completa, mechas, balayage y retoques. También realizamos tratamientos químicos como alisados progresivos, keratina e hidrolizados. Además, contamos con tratamientos capilares para hidratar, fortalecer y revitalizar el cabello según sus necesidades.</p>
                             <div class="flex items-center space-x-4 mb-4 mt-4">
                                 <p class="text-lg font-semibold m-0 p-0">Pide tu cita aquí</p>
-                                <a href="https://wa.me/573128845647?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
+                                <a href="https://wa.me/573184644398?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
                                     target="_blank"
                                     class="inline-block bg-white hover:bg-gray-50 text-green-600 border border-green-500 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm">
                                     WhatsApp
@@ -117,7 +117,7 @@
                             <p class="text-gray-600">Maquillaje profesional para todo tipo de eventos, desde bodas y fiestas hasta sesiones fotográficas, eventos nocturnos y temáticos. Nuestro equipo se enfoca en realzar tu belleza natural con productos de alta calidad y técnicas actualizadas, creando looks personalizados que se adaptan a tu estilo, tipo de evento y necesidades. Ya sea un maquillaje natural, glamuroso o artístico, garantizamos un acabado impecable y duradero</p>
                             <div class="flex items-center space-x-4 mb-4 mt-4">
                                 <p class="text-lg font-semibold m-0 p-0">Pide tu cita aquí</p>
-                                <a href="https://wa.me/573128845647?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
+                                <a href="https://wa.me/573184644398?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
                                     target="_blank"
                                     class="inline-block bg-white hover:bg-gray-50 text-green-600 border border-green-500 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm">
                                     WhatsApp
@@ -128,7 +128,7 @@
                                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                                     <div class="bg-gray-300 h-96 md:h-[500px] rounded-lg overflow-hidden relative">
                                         <video class="absolute top-0 left-0 w-full h-full object-cover"
-                                            src="{{ asset('videos/uñas1.mp4') }}"
+                                            src="{{ asset('videos/maquillaje1.mp4') }}"
                                             autoplay
                                             loop
                                             muted
@@ -145,7 +145,7 @@
                             <p class="text-gray-600">Servicios de manicura y pedicura combinan estética, cuidado y bienestar para mantener tus uñas y piel en óptimas condiciones. Ofrecemos desde opciones básicas y semipermanentes hasta tratamientos spa, uñas esculpidas, decoración personalizada y pedicura clínica. Cada sesión incluye atención a cutículas, exfoliación, hidratación y masaje, brindándote no solo una imagen impecable, sino también una experiencia relajante y revitalizante</p>
                             <div class="flex items-center space-x-4 mb-4 mt-4">
                                 <p class="text-lg font-semibold m-0 p-0">Pide tu cita aquí</p>
-                                <a href="https://wa.me/573128845647?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
+                                <a href="https://wa.me/573184644398?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
                                     target="_blank"
                                     class="inline-block bg-white hover:bg-gray-50 text-green-600 border border-green-500 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm">
                                     WhatsApp
@@ -156,7 +156,7 @@
                                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                                     <div class="bg-gray-300 h-96 md:h-[500px] rounded-lg overflow-hidden relative">
                                         <video class="absolute top-0 left-0 w-full h-full object-cover"
-                                            src="{{ asset('videos/maquillaje1.mp4') }}"
+                                            src="{{ asset('videos/uñas1.mp4') }}"
                                             autoplay
                                             loop
                                             muted
@@ -211,11 +211,27 @@
                     <ul class="space-y-3 text-gray-700">
                         <li>
                             <p class="font-medium">Facebook:</p>
-                            <a href="https://www.facebook.com/people/Todo-Estilo-Peluquer%C3%ADa-y-Tienda-del-Peluquero/100046478302040/" target="_blank" class="text-blue-600 hover:underline">Todo Estilo - Peluquería y Tienda del Peluquero</a>
+                            <a href="https://www.facebook.com/people/Todo-Estilo-Peluquer%C3%ADa-y-Tienda-del-Peluquero/100046478302040/"
+                                target="_blank"
+                                class="text-blue-600 hover:underline">
+                                Todo Estilo - Peluquería y Tienda del Peluquero
+                            </a>
+                            <a href="https://www.facebook.com/people/Todo-Estilo-Peluquer%C3%ADa-y-Tienda-del-Peluquero/100046478302040/"
+                                target="_blank"
+                                class="inline-block bg-white hover:bg-gray-50 text-blue-600 border border-blue-600 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm mt-2">
+                                Ver Facebook
+                            </a>
                         </li>
                         <li>
                             <p class="font-medium">Instagram:</p>
-                            <a href="https://www.instagram.com/peluqueria_todo_estilo_/" target="_blank" class="text-pink-600 hover:underline">@peluqueria_todo_estilo_</a>
+                            <a href="https://www.instagram.com/peluqueria_todo_estilo_/" target="_blank" class="text-pink-600 hover:underline">
+                                @peluqueria_todo_estilo_
+                            </a>
+                            <a href="https://www.instagram.com/peluqueria_todo_estilo_/"
+                                target="_blank"
+                                class="inline-block bg-white hover:bg-gray-50 text-black italic border border-gray-400 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm mt-2">
+                                Ver Instagram
+                            </a>
                         </li>
                         <li>
                             <p class="font-medium">Correo:</p>
@@ -223,7 +239,12 @@
                         </li>
                         <li>
                             <p class="font-medium">Whatsapp:</p>
-                            <a href="https://wa.me/573184644398" target="_blank" class="text-green-600 hover:underline">3184644398</a>
+                            <a href="https://wa.me/573184644398" target="_blank" class="text-black hover:underline">Celular: 3184644398</a>
+                            <a href="https://wa.me/573184644398?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa."
+                                target="_blank"
+                                class="inline-block bg-white hover:bg-gray-50 text-green-600 border border-green-500 font-bold py-2 px-4 rounded-full text-sm transition duration-300 ease-in-out shadow-sm">
+                                Ir a WhatsApp
+                            </a>
                         </li>
                         <li>
                             <p class="font-medium">Dirección:</p>

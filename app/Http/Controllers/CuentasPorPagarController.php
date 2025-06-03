@@ -26,7 +26,7 @@ class CuentasPorPagarController extends Controller
         return redirect()->route('cuentas-por-pagar.index')->with('success', 'Cuenta por pagar registrada exitosamente.');
     }
 
-   public function index(Request $request)
+    public function index(Request $request)
     {
         $estado = $request->input('estado');
 

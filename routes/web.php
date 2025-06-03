@@ -86,15 +86,24 @@ Route::middleware(['auth'])->group(function () {
     // Rutas de clientes (ahora gestionadas por ClienteController)
     Route::resource('clientes', ClienteController::class);
 
-    // Rutas de cuentas por cobrar
-    Route::prefix('cuentas-por-cobrar')->name('cuentas_por_cobrar.')->group(function () {
-        Route::get('/', [CuentasPorCobrarController::class, 'index'])->name('index');
-        Route::get('/create', [CuentasPorCobrarController::class, 'create'])->name('create');
-        Route::post('/store', [CuentasPorCobrarController::class, 'store'])->name('store');
-        Route::get('/{cuentaPorCobrar}/edit', [CuentasPorCobrarController::class, 'edit'])->name('edit');
-        Route::put('/{cuentaPorCobrar}', [CuentasPorCobrarController::class, 'update'])->name('update');
-        Route::delete('/{cuentaPorCobrar}', [CuentasPorCobrarController::class, 'destroy'])->name('destroy');
-    });
+ Route::prefix('cuentas-por-cobrar')->name('cuentasPorCobrar.')->group(function () {
+    // Rutas CRUD básicas para Cuentas por Cobrar
+    Route::get('/', [CuentasPorCobrarController::class, 'index'])->name('index');
+    Route::get('/create', [CuentasPorCobrarController::class, 'create'])->name('create');
+    Route::post('/store', [CuentasPorCobrarController::class, 'store'])->name('store');
+    Route::get('/{cuentaPorCobrar}/edit', [CuentasPorCobrarController::class, 'edit'])->name('edit');
+    Route::put('/{cuentaPorCobrar}', [CuentasPorCobrarController::class, 'update'])->name('update');
+    Route::delete('/{cuentaPorCobrar}', [CuentasPorCobrarController::class, 'destroy'])->name('destroy');
+
+    // --- Nuevas Rutas de Pago para Cuentas por Cobrar ---
+    // Muestra el formulario para registrar un pago de una cuenta específica
+    Route::get('/{cuentaPorCobrar}/pagar', [CuentasPorCobrarController::class, 'createPago'])->name('createPago');
+
+    // Procesa el pago (crea un servicio y actualiza la cuenta por cobrar)
+    // Nota: Esta ruta no necesita el parámetro {cuentaPorCobrar} en la URL
+    // porque el ID se envía como un campo oculto en el formulario.
+    Route::post('/procesar-pago', [CuentasPorCobrarController::class, 'storePago'])->name('storePago');
+});
     Route::get('/indicadores', [IndicadoresController::class, 'index'])->name('indicadores.index');
     //Route::get('/cuadre-de-caja', [CuadreDeCajaController::class, 'index'])->name('cuadre_de_caja.index');
     

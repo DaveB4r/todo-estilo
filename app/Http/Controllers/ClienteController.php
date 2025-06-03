@@ -14,7 +14,7 @@ class ClienteController extends Controller
     public function index()
     {
         $clientes = Cliente::all();
-        return view('cuentas_por_cobrar.index', compact('clientes'));
+        return view('cuentasPorCobrar.index', compact('clientes'));
     }
 
     /**
@@ -41,7 +41,7 @@ class ClienteController extends Controller
 
         Cliente::create($request->all());
 
-        return Redirect::route('cuentas_por_cobrar.index')->with('success', 'Cliente creado exitosamente.');
+        return Redirect::route('cuentasPorCobrar.index')->with('success', 'Cliente creado exitosamente.');
     }
 
     /**
@@ -64,20 +64,20 @@ class ClienteController extends Controller
      * Update the specified cliente in storage.
      */
     public function update(Request $request, Cliente $cliente)
-{
-    $request->validate([
-        'identificacion' => 'required|integer|unique:clientes,identificacion,' . $cliente->identificacion . ',identificacion',
-        'nombre' => 'required|string|max:255',
-        'apellido' => 'nullable|string|max:255',
-        'telefono' => 'nullable|string|max:20',
-        'direccion' => 'nullable|string|max:255',
-        'observaciones' => 'nullable|string',
-    ]);
+    {
+        $request->validate([
+            'identificacion' => 'required|integer|unique:clientes,identificacion,' . $cliente->identificacion . ',identificacion',
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'direccion' => 'nullable|string|max:255',
+            'observaciones' => 'nullable|string',
+        ]);
 
-    $cliente->update($request->all());
+        $cliente->update($request->all());
 
-    return Redirect::route('cuentas_por_cobrar.index')->with('success', 'Cliente actualizado exitosamente.');
-}
+        return Redirect::route('cuentasPorCobrar.index')->with('success', 'Cliente actualizado exitosamente.');
+    }
 
 
     /**
@@ -87,6 +87,6 @@ class ClienteController extends Controller
     {
         $cliente->delete();
 
-        return Redirect::route('cuentas_por_cobrar.index')->with('success', 'Cliente eliminado exitosamente.');
+        return Redirect::route('cuentasPorCobrar.index')->with('success', 'Cliente eliminado exitosamente.');
     }
 }

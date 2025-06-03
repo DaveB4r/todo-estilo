@@ -121,7 +121,7 @@
                             <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900 mr-2">
                                 Crear cliente
                             </button>
-                            <button type="button" onclick="window.location.href='{{ route('cuentas_por_cobrar.index') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
+                            <button type="button" onclick="window.location.href='{{ route('cuentasPorCobrar.index') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
                                 Cancelar
                             </button>
                         </div>

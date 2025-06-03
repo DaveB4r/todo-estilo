@@ -43,15 +43,15 @@
             <aside class="w-64 bg-gray-500 shadow-md px-4 py-6 space-y-4 text-white">
                 <nav class="space-y-2">
                     <a href="{{ route('clientes.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Crear cliente</a>
-                    <a href="{{ route('cuentas_por_cobrar.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Nueva cuenta por cobrar</a>
+                    <a href="{{ route('cuentasPorCobrar.create') }}" class="block px-3 py-2 rounded hover:bg-gray-700 text-white font-medium">Nueva cuenta por cobrar</a>
 
                     {{-- FILTRO POR ESTADO AÑADIDO --}}
-                    <form action="{{ route('cuentas_por_cobrar.index') }}" method="GET" class="px-1 mt-4 space-y-1">
+                    <form action="{{ route('cuentasPorCobrar.index') }}" method="GET" class="px-1 mt-4 space-y-1">
                         <label for="estado_filter" class="block text-white text-sm font-medium">Filtrar Cuentas por Estado:</label>
                         <select name="estado" id="estado_filter" onchange="this.form.submit()" class="w-full px-2 py-1 rounded text-gray-800">
                             <option value="">-- Todos --</option>
                             <option value="Pendiente" {{ request('estado') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-                            <option value="Paga" {{ request('estado') == 'Paga' ? 'selected' : '' }}>Paga</option>
+                            <option value="Pagada" {{ request('estado') == 'Pagada' ? 'selected' : '' }}>Pagada</option>
                         </select>
                     </form>
                     {{-- FIN FILTRO POR ESTADO --}}
@@ -68,7 +68,7 @@
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onclick="this.parentElement.style.display='none'">
                             <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <title>Close</title>
-                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
                             </svg>
                         </span>
                     </div>
@@ -80,7 +80,7 @@
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onclick="this.parentElement.style.display='none'">
                             <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <title>Close</title>
-                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
                             </svg>
                         </span>
                     </div>
@@ -157,21 +157,16 @@
                                     <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ $cuenta->tipoServicio->nombre }}</td>
                                     <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ number_format($cuenta->valor, 2) }}</td>
                                     <td class="px-3 py-2 text-sm text-gray-900">{{ Str::limit($cuenta->observaciones, 20) ?? '-' }}</td>
-                                    {{-- VALOR DEL ESTADO AÑADIDO --}}
                                     <td class="px-3 py-2 whitespace-nowrap text-sm">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $cuenta->estado === 'Pendiente' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
                                             {{ $cuenta->estado }}
                                         </span>
                                     </td>
-                                    {{-- FIN VALOR DEL ESTADO --}}
                                     <td class="px-3 py-2 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex justify-end items-center space-x-4">
-                                            <a href="{{ route('cuentas_por_cobrar.edit', $cuenta) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
-                                            <form action="{{ route('cuentas_por_cobrar.destroy', $cuenta) }}" method="POST" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900 ml-2">Borrar</button>
-                                            </form>
+                                            
+                                            <a href="{{ route('cuentasPorCobrar.createPago', $cuenta->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Pagar</a>
+
                                         </div>
                                     </td>
                                 </tr>

@@ -30,7 +30,7 @@
                             </button>
                         </form>
                         @endauth
-                        <a href="{{ route('cuentas_por_cobrar.index') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2">Regresar</a>                    </div>
+                        <a href="{{ route('cuentasPorCobrar.index') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2">Regresar</a>                    </div>
                 </div>
             </div>
         </nav>

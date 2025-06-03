@@ -32,31 +32,31 @@ class CuadreDeCajaController extends Controller
 
         // 2. Calcular el Saldo Total en Efectivo
         $ingresosServiciosEfectivo = Servicio::where('metodo_pago', 'Efectivo')
-                                           ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-                                           ->sum('precio');
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->sum('precio');
 
         $ingresosAdicionalesEfectivo = Ingreso::where('medio_pago', 'Efectivo')
-                                            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-                                            ->sum('valor');
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->sum('valor');
 
         $salidasEfectivo = Salida::where('medio_pago', 'Efectivo')
-                               ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-                               ->sum('valor');
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->sum('valor');
 
         $saldoEfectivo = ($ingresosServiciosEfectivo + $ingresosAdicionalesEfectivo) - $salidasEfectivo;
 
         // 3. Calcular el Saldo Total en Transferencia
         $ingresosServiciosTransferencia = Servicio::where('metodo_pago', 'Transferencia')
-                                                  ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-                                                  ->sum('precio');
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->sum('precio');
 
         $ingresosAdicionalesTransferencia = Ingreso::where('medio_pago', 'Transferencia')
-                                                  ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-                                                  ->sum('valor');
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->sum('valor');
 
         $salidasTransferencia = Salida::where('medio_pago', 'Transferencia')
-                                    ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-                                    ->sum('valor');
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->sum('valor');
 
         $saldoTransferencia = ($ingresosServiciosTransferencia + $ingresosAdicionalesTransferencia) - $salidasTransferencia;
 

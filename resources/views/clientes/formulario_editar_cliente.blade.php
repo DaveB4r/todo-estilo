@@ -9,6 +9,7 @@
 </head>
 
 {{-- El contenedor principal en el body para centrar todo el contenido --}}
+
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
     {{-- Contenedor del formulario con ancho limitado y borde --}}
@@ -48,8 +49,7 @@
                             required
                             readonly {{-- El campo de identificación es solo de lectura para evitar cambios --}}
                             min="0"
-                            step="1"
-                        >
+                            step="1">
                     </td>
                 </tr>
                 <tr>
@@ -62,8 +62,7 @@
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             value="{{ old('nombre', $cliente->nombre) }}"
                             required
-                            placeholder="Ej: Juan"
-                        >
+                            placeholder="Ej: Juan">
                     </td>
                 </tr>
                 <tr>
@@ -75,8 +74,7 @@
                             id="apellido"
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             value="{{ old('apellido', $cliente->apellido) }}"
-                            placeholder="Ej: Pérez"
-                        >
+                            placeholder="Ej: Pérez">
                     </td>
                 </tr>
                 <tr>
@@ -88,8 +86,7 @@
                             id="telefono"
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             value="{{ old('telefono', $cliente->telefono) }}"
-                            placeholder="Ej: 3001234567"
-                        >
+                            placeholder="Ej: 3001234567">
                     </td>
                 </tr>
                 <tr>
@@ -101,8 +98,7 @@
                             id="direccion"
                             class="w-full border border-gray-300 rounded shadow-sm h-10 px-3 text-base"
                             value="{{ old('direccion', $cliente->direccion) }}"
-                            placeholder="Ej: Calle 10 # 20-30"
-                        >
+                            placeholder="Ej: Calle 10 # 20-30">
                     </td>
                 </tr>
                 <tr>
@@ -112,8 +108,7 @@
                             name="observaciones"
                             id="observaciones"
                             class="w-full border border-gray-300 rounded shadow-sm h-24 px-3 py-2 text-base" {{-- Agregué py-2 para padding vertical en textarea --}}
-                            placeholder="Notas adicionales sobre el cliente..."
-                        >{{ old('observaciones', $cliente->observaciones) }}</textarea>
+                            placeholder="Notas adicionales sobre el cliente...">{{ old('observaciones', $cliente->observaciones) }}</textarea>
                     </td>
                 </tr>
                 <tr>
@@ -122,7 +117,7 @@
                             <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900 mr-2">
                                 Guardar cambios
                             </button>
-                            <button type="button" onclick="window.location.href='{{ route('cuentas_por_cobrar.index') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
+                            <button type="button" onclick="window.location.href='{{ route('cuentasPorCobrar.index') }}'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
                                 Cancelar
                             </button>
                         </div>
@@ -132,4 +127,5 @@
         </form>
     </div>
 </body>
+
 </html>

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\CuentaPorCobrar;
 use App\Models\TipoServicio;
+use App\Models\Servicio;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CuentasPorCobrarController extends Controller
 {
@@ -17,18 +20,13 @@ class CuentasPorCobrarController extends Controller
      */
     public function index(Request $request)
     {
-        // Inicia una consulta para CuentaPorCobrar e incluye las relaciones Cliente y TipoServicio
         $query = CuentaPorCobrar::query()->with(['cliente', 'tipoServicio']);
 
-        // Aplica el filtro por estado si se proporciona en la URL
         if ($request->has('estado') && $request->input('estado') != '') {
             $query->where('estado', $request->input('estado'));
         }
 
-        // Obtiene las cuentas por cobrar filtradas o todas si no hay filtro
         $cuentasPorCobrar = $query->get();
-
-        // Obtiene todos los clientes y tipos de servicio para pasarlos a la vista, si son necesarios (ej. para el sidebar o futuros selectores)
         $clientes = Cliente::all();
         $tiposServicio = TipoServicio::all();
 
@@ -44,7 +42,6 @@ class CuentasPorCobrarController extends Controller
     {
         $clientes = Cliente::all();
         $tiposServicio = TipoServicio::all();
-        // Asumiendo que la vista para crear es 'cuentas_por_cobrar.formulario_registrar_cuenta_por_cobrar'
         return view('cuentas_por_cobrar.formulario_registrar_cuenta_por_cobrar', compact('clientes', 'tiposServicio'));
     }
 
@@ -57,21 +54,17 @@ class CuentasPorCobrarController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // ¡CAMBIO CLAVE AQUÍ!
-            // Ahora validamos que el cliente_id enviado exista en la columna 'identificacion' de la tabla 'clientes'.
             'cliente_id' => 'required|exists:clientes,identificacion',
-            // VALIDADO: Validamos que el tipo_servicio_id enviado exista en la columna 'id' de la tabla 'tipo_servicios'.
             'tipo_servicio_id' => 'required|exists:tipo_servicios,id',
             'fecha' => 'required|date',
             'valor' => 'required|numeric|min:0',
             'observaciones' => 'nullable|string|max:255',
-            // VALIDADO: Validamos que el estado sea 'Pendiente' o 'Paga'.
             'estado' => 'required|in:Pendiente,Paga',
         ]);
 
         CuentaPorCobrar::create($request->all());
 
-        return redirect()->route('cuentas_por_cobrar.index')->with('success', 'Cuenta por cobrar creada exitosamente.');
+        return redirect()->route('cuentasPorCobrar.index')->with('success', 'Cuenta por cobrar creada exitosamente.');
     }
 
     /**
@@ -84,7 +77,6 @@ class CuentasPorCobrarController extends Controller
     {
         $clientes = Cliente::all();
         $tiposServicio = TipoServicio::all();
-        // Asumiendo que la vista para editar es 'cuentas_por_cobrar.formulario_editar_cuenta_por_cobrar'
         return view('cuentas_por_cobrar.formulario_editar_cuenta_por_cobrar', compact('cuentaPorCobrar', 'clientes', 'tiposServicio'));
     }
 
@@ -98,21 +90,17 @@ class CuentasPorCobrarController extends Controller
     public function update(Request $request, CuentaPorCobrar $cuentaPorCobrar)
     {
         $request->validate([
-            // ¡CAMBIO CLAVE AQUÍ!
-            // Ahora validamos que el cliente_id enviado exista en la columna 'identificacion' de la tabla 'clientes'.
             'cliente_id' => 'required|exists:clientes,identificacion',
-            // VALIDADO: Validamos que el tipo_servicio_id enviado exista en la columna 'id' de la tabla 'tipo_servicios'.
             'tipo_servicio_id' => 'required|exists:tipo_servicios,id',
             'fecha' => 'required|date',
             'valor' => 'required|numeric|min:0',
             'observaciones' => 'nullable|string|max:255',
-            // VALIDADO: Validamos que el estado sea 'Pendiente' o 'Paga'.
             'estado' => 'required|in:Pendiente,Paga',
         ]);
 
         $cuentaPorCobrar->update($request->all());
 
-        return redirect()->route('cuentas_por_cobrar.index')->with('success', 'Cuenta por cobrar actualizada exitosamente.');
+        return redirect()->route('cuentasPorCobrar.index')->with('success', 'Cuenta por cobrar actualizada exitosamente.');
     }
 
     /**
@@ -125,6 +113,69 @@ class CuentasPorCobrarController extends Controller
     {
         $cuentaPorCobrar->delete();
 
-        return redirect()->route('cuentas_por_cobrar.index')->with('success', 'Cuenta por cobrar eliminada exitosamente.');
+        return redirect()->route('cuentasPorCobrar.index')->with('success', 'Cuenta por cobrar eliminada exitosamente.');
+    }
+
+
+    /**
+     * Muestra el formulario para registrar un pago (como un servicio) de una cuenta por cobrar.
+     *
+     * @param  \App\Models\CuentaPorCobrar  $cuentaPorCobrar
+     * @return \Illuminate\View\View
+     */
+    public function createPago(CuentaPorCobrar $cuentaPorCobrar)
+    {
+        $estilistas = User::all();
+        $categorias = TipoServicio::pluck('categoria')->unique()->toArray();
+        $tipoServicios = TipoServicio::all();
+
+        return view('cuentas_por_cobrar.pago', [
+            'cuenta' => $cuentaPorCobrar,
+            'estilistas' => $estilistas,
+            'categorias' => $categorias,
+            'tipoServicios' => $tipoServicios,
+        ]);
+    }
+
+    /**
+     * Procesa el pago, crea un registro de servicio y actualiza el estado de la cuenta por cobrar.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storePago(Request $request)
+    {
+        $request->validate([
+            'cuenta_por_cobrar_id' => 'required|exists:cuentas_por_cobrar,id',
+            'fecha' => 'required|date',
+            'user_id' => 'required|exists:users,id',
+            'categoria' => ['required', 'string', Rule::in(TipoServicio::pluck('categoria')->unique()->toArray())],
+            'tipo_servicio_id' => 'required|exists:tipo_servicios,id',
+            'metodo_pago' => 'required|string|in:Efectivo,Transferencia,Tarjeta',
+            'observaciones' => 'nullable|string|max:500',
+            'porcentaje' => 'required|numeric|min:0|max:100', // Sigue validando el entero (0-100)
+            'precio' => 'required|numeric|min:0',
+        ]);
+
+        $cuenta = CuentaPorCobrar::findOrFail($request->cuenta_por_cobrar_id);
+
+        // --- AJUSTE CLAVE AQUÍ: Convertir el porcentaje de entero a decimal ---
+        $porcentajeDecimal = $request->porcentaje / 100;
+
+        Servicio::create([
+            'fecha' => $request->fecha,
+            'user_id' => $request->user_id,
+            'categoria' => $request->categoria,
+            'tipo_servicio_id' => $request->tipo_servicio_id,
+            'metodo_pago' => $request->metodo_pago,
+            'observaciones' => $request->observaciones,
+            'porcentaje' => $porcentajeDecimal, // Guardamos el valor decimal
+            'precio' => $request->precio,
+        ]);
+
+        $cuenta->estado = 'Pagada';
+        $cuenta->save();
+
+        return redirect()->route('cuentasPorCobrar.index')->with('success', 'Pago registrado como servicio y cuenta por cobrar marcada como pagada.');
     }
 }
